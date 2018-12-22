@@ -26,7 +26,7 @@ public class FabConsumer implements Runnable {
         props.put("bootstrap.servers", BOOTSTRAP_SERVERS);
         props.put("group.id", groupId);
         props.put("key.deserializer", StringDeserializer.class.getName());
-        props.put("value.deserializer", StringDeserializer.class.getName());
+        props.put("value.deserializer", CustomEventDeserializer.class.getName());
         this.consumer = new KafkaConsumer<>(props);
     }
 
