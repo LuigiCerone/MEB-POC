@@ -1,38 +1,20 @@
 https://www.digitalocean.com/community/tutorials/how-to-install-apache-kafka-on-ubuntu-18-04
 
-sudo useradd kafka -m
-
-sudo passwd kafka
-psw kafka
-
-sudo adduser kafka sudo
-
-su -l kafka
 
 mkdir ~/Downloads
-
 curl "http://apache.panu.it/kafka/2.1.0/kafka_2.11-2.1.0.tgz" -o ~/Downloads/kafka.tgz
 
 mkdir ~/kafka && cd ~/kafka
 tar -xvzf ~/Downloads/kafka.tgz --strip 1
 
 
-export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")
 
 
+For Connect:
+Enable logbin on server mysql
 
 
-
-
-sudo systemctl start kafka
-sudo journalctl -u kafka
-
-
-
-Konnect
-Abilitare logbin sul server mysql
-
-
+Register Connector:
 curl -i -X POST -H "Accept:application/json" \
     -H  "Content-Type:application/json" http://localhost:8083/connectors/ \
     -d '{
