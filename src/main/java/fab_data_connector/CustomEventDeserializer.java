@@ -6,8 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
 
 public class CustomEventDeserializer implements Deserializer<FabEvent> {
+
+
     @Override
     public void configure(Map<String, ?> map, boolean b) {
+
     }
 
     @Override
@@ -17,7 +20,6 @@ public class CustomEventDeserializer implements Deserializer<FabEvent> {
         try {
             fabEvent = mapper.readValue(bytes, FabEvent.class);
         } catch (Exception e) {
-
             e.printStackTrace();
         }
         return fabEvent;

@@ -1,53 +1,48 @@
 package fab_data_connector;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 import java.sql.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FabEvent {
     //    private int PK_ID;
-    private int equipID;
-    private int recipeID;
-    private int stepID;
+
+    private Long equipID;
+    private Long recipeID;
+    private Long stepID;
     private String holdType;
     private boolean holdFlag;
     private Date dateTime;
-
-    public FabEvent(int equipID, int recipeID, int stepID, String holdType, boolean holdFlag, Date dateTime) {
-        this.equipID = equipID;
-        this.recipeID = recipeID;
-        this.stepID = stepID;
-        this.holdType = holdType;
-        this.holdFlag = holdFlag;
-        this.dateTime = dateTime;
-    }
 
     // Don't remove, required by jackson.
     public FabEvent() {
     }
 
-    public int getEquipID() {
+    public Long getEquipID() {
         return equipID;
     }
 
-    public void setEquipID(int equipID) {
+    public void setEquipID(Long equipID) {
         this.equipID = equipID;
     }
 
-    public int getRecipeID() {
+    public Long getRecipeID() {
         return recipeID;
     }
 
-    public void setRecipeID(int recipeID) {
+    public void setRecipeID(Long recipeID) {
         this.recipeID = recipeID;
     }
 
-    public int getStepID() {
+    public Long getStepID() {
         return stepID;
     }
 
-    public void setStepID(int stepID) {
+    public void setStepID(Long stepID) {
         this.stepID = stepID;
     }
 
@@ -58,6 +53,7 @@ public class FabEvent {
     public void setHoldType(String holdType) {
         this.holdType = holdType;
     }
+
 
     public boolean isHoldFlag() {
         return holdFlag;
@@ -71,8 +67,21 @@ public class FabEvent {
         return dateTime;
     }
 
-    public void setDateTime(Date dateTime) {
-        this.dateTime = dateTime;
+    public void setDateTime(int dateTime) {
+        this.dateTime = new Date(dateTime);
+    }
+
+
+    @JsonSetter("payload")
+    public void unwrap(Map<String, Object> payload) {
+        HashMap<String, Object> after = (HashMap<String, Object>) payload.get("after");
+
+        this.setEquipID(Long.parseLong((String) after.get("equip"), 16));
+        this.setRecipeID(Long.parseLong((String) after.get("recipe"), 16));
+        this.setStepID(Long.parseLong((String) after.get("step"), 16));
+        this.setHoldType((String) after.get("holdtype"));
+        this.setHoldFlag(Boolean.parseBoolean(String.valueOf(after.get("holdflag"))));
+        this.setDateTime(Integer.parseInt(String.valueOf(after.get("datetime"))));
     }
 
     @Override
