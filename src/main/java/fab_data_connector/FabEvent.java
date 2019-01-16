@@ -9,6 +9,17 @@ import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FabEvent {
+    // DB Column names.
+    private final String TABLE_NAME = "event";
+    private final String ID = "id";
+    private final String EQUIP_ID = "equip";
+    private final String RECIPE_ID = "recipe";
+    private final String STEP_ID = "step";
+    private final String HOLD_TYPE = "holdtype";
+    private final String HOLD_FLAG = "holdflag";
+    private final String DATE_TIME = "datetime";
+
+
     //    private int PK_ID;
 
     private Long equipID;
@@ -76,12 +87,12 @@ public class FabEvent {
     public void unwrap(Map<String, Object> payload) {
         HashMap<String, Object> after = (HashMap<String, Object>) payload.get("after");
 
-        this.setEquipID(Long.parseLong((String) after.get("equip"), 16));
-        this.setRecipeID(Long.parseLong((String) after.get("recipe"), 16));
-        this.setStepID(Long.parseLong((String) after.get("step"), 16));
-        this.setHoldType((String) after.get("holdtype"));
-        this.setHoldFlag(Boolean.parseBoolean(String.valueOf(after.get("holdflag"))));
-        this.setDateTime(Integer.parseInt(String.valueOf(after.get("datetime"))));
+        this.setEquipID(Long.parseLong((String) after.get(EQUIP_ID), 16));
+        this.setRecipeID(Long.parseLong((String) after.get(RECIPE_ID), 16));
+        this.setStepID(Long.parseLong((String) after.get(RECIPE_ID), 16));
+        this.setHoldType((String) after.get(HOLD_TYPE));
+        this.setHoldFlag(Boolean.parseBoolean(String.valueOf(after.get(HOLD_FLAG))));
+        this.setDateTime(Integer.parseInt(String.valueOf(after.get(DATE_TIME))));
     }
 
     @Override

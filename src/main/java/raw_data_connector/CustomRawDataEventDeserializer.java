@@ -1,8 +1,7 @@
-package fab_data_connector;
+package raw_data_connector;
 
 import org.apache.kafka.common.serialization.Deserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import raw_data_connector.RawEvent;
 
 import java.util.Map;
 

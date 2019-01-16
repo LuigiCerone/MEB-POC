@@ -1,6 +1,25 @@
 package raw_data_connector;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RawEvent {
+    // DB Column names.
+    private final String TABLE_NAME = "analytics";
+    private final String ID = "id";
+    private final String EQUIP_ID = "equipId";
+    private final String EQUIP_NAME = "equipName";
+    private final String RECIPE_ID = "recipeId";
+    private final String RECIPE_NAME = "recipeName";
+    private final String STEP_ID = "stepId";
+    private final String STEP_NAME = "stepName";
+    private final String FAKE_DATA = "fakeData";
+
+
     //    private int PK_ID;
 
     private Long equipID;
@@ -79,5 +98,30 @@ public class RawEvent {
 
     public void setFakeData(char[] fakeData) {
         this.fakeData = fakeData;
+    }
+
+    @JsonSetter("payload")
+    public void unwrap(Map<String, Object> payload) {
+        HashMap<String, Object> after = (HashMap<String, Object>) payload.get("after");
+
+        this.setEquipID(Long.parseLong((String) after.get(EQUIP_ID), 16));
+        this.setEquipName((String) after.get(EQUIP_NAME));
+        this.setRecipeID(Long.parseLong((String) after.get(RECIPE_ID), 16));
+        this.setRecipeName((String) after.get(RECIPE_NAME));
+        this.setStepID(Long.parseLong((String) after.get(STEP_ID), 16));
+        this.setStepName((String) after.get(STEP_NAME));
+//        this.setFakeData(Long.parseLong((String) after.get("step"), 16));
+    }
+
+    @Override
+    public String toString() {
+        return "RawEvent{" +
+                "equipID=" + equipID +
+                ", equipName='" + equipName + '\'' +
+                ", recipeID=" + recipeID +
+                ", recipeName='" + recipeName + '\'' +
+                ", stepID=" + stepID +
+                ", stepName='" + stepName + '\'' +
+                '}';
     }
 }
