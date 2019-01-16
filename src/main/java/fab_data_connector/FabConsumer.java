@@ -2,7 +2,6 @@ package fab_data_connector;
 
 import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.errors.WakeupException;
-import org.apache.kafka.common.serialization.LongDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
 import java.util.*;
@@ -26,7 +25,7 @@ public class FabConsumer implements Runnable {
         props.put("bootstrap.servers", BOOTSTRAP_SERVERS);
         props.put("group.id", groupId);
         props.put("key.deserializer", StringDeserializer.class.getName());
-        props.put("value.deserializer", CustomEventDeserializer.class.getName());
+        props.put("value.deserializer", CustomFabDataEventDeserializer.class.getName());
         this.consumer = new KafkaConsumer<>(props);
     }
 
