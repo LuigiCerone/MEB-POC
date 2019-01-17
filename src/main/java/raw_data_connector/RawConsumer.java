@@ -4,6 +4,7 @@ import fab_data_connector.CustomFabDataEventDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.errors.WakeupException;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
@@ -14,7 +15,7 @@ import java.util.Properties;
 
 public class RawConsumer implements Runnable {
 
-    public final static String TOPIC = "sa18.raw_data.event";
+    public final static String TOPIC = "sa18.raw_data.analytics";
     //    public final static String TOPIC = "consumer-tutorial";
     public final static String BOOTSTRAP_SERVERS = "localhost:9092";
 
@@ -32,6 +33,8 @@ public class RawConsumer implements Runnable {
         props.put("group.id", groupId);
         props.put("key.deserializer", StringDeserializer.class.getName());
         props.put("value.deserializer", CustomRawDataEventDeserializer.class.getName());
+
+//        props.put("value.deserializer", CustomRawDataEventDeserializer.class.getName());
         this.consumer = new KafkaConsumer<>(props);
     }
 

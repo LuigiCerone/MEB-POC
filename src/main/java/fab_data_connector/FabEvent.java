@@ -29,7 +29,7 @@ public class FabEvent {
     private boolean holdFlag;
     private Date dateTime;
 
-    // Don't remove, required by jackson.
+    // Don't remove, required by Jackson.
     public FabEvent() {
     }
 
