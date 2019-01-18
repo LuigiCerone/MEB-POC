@@ -3,6 +3,7 @@ package fab_data_connector;
 import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.errors.WakeupException;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import utils.TopicUtils;
 
 import java.util.*;
 
@@ -35,13 +36,20 @@ public class FabConsumer implements Runnable {
             consumer.subscribe(topics);
 
             while (true) {
-                ConsumerRecords<String, String> records = consumer.poll(Long.MAX_VALUE);
-                for (ConsumerRecord<String, String> record : records) {
+                ConsumerRecords<String, FabEvent> records = consumer.poll(Long.MAX_VALUE);
+                for (ConsumerRecord<String, FabEvent> record : records) {
+
                     Map<String, Object> data = new HashMap<>();
                     data.put("partition", record.partition());
                     data.put("offset", record.offset());
                     data.put("value", record.value());
                     System.out.println(this.id + ": " + data);
+
+
+                    // We need to republish the rows in the categories' topics.
+                    String topicName = record.value().getHoldType();
+
+                    TopicUtils.createTopic(topicName);
                 }
             }
         } catch (WakeupException e) {

@@ -2,22 +2,28 @@ package raw_data_connector;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
 
 import java.util.HashMap;
 import java.util.Map;
 
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RawEvent {
+
     // DB Column names.
-    private final String TABLE_NAME = "analytics";
-    private final String ID = "id";
-    private final String EQUIP_ID = "equipId";
-    private final String EQUIP_NAME = "equipName";
-    private final String RECIPE_ID = "recipeId";
-    private final String RECIPE_NAME = "recipeName";
-    private final String STEP_ID = "stepId";
-    private final String STEP_NAME = "stepName";
-    private final String FAKE_DATA = "fakeData";
+
+    private transient String TABLE_NAME = "analytics";
+    private transient String ID = "id";
+    private transient String EQUIP_ID = "equipId";
+    private transient String EQUIP_NAME = "equipName";
+    private transient String RECIPE_ID = "recipeId";
+    private transient String RECIPE_NAME = "recipeName";
+    private transient String STEP_ID = "stepId";
+    private transient String STEP_NAME = "stepName";
+    private transient String FAKE_DATA = "fakeData";
 
 
     //    private int PK_ID;
@@ -117,13 +123,7 @@ public class RawEvent {
 
     @Override
     public String toString() {
-        return "RawEvent{" +
-                "equipID=" + equipID +
-                ", equipName='" + equipName + '\'' +
-                ", recipeID=" + recipeID +
-                ", recipeName='" + recipeName + '\'' +
-                ", stepID=" + stepID +
-                ", stepName='" + stepName + '\'' +
-                '}';
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 }

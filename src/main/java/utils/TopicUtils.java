@@ -14,7 +14,11 @@ public class TopicUtils {
 
     public final static String BOOTSTRAP_SERVERS = "localhost:9092";
 
-    public static boolean createTopic(String topicName, int partitions, int replicationFactory) {
+    public static boolean createTopic(String topicName) {
+
+        int partitions = 1;
+        int replicationFactory = 1;
+
         Properties properties = new Properties();
 
         properties.setProperty("bootstrap.servers", BOOTSTRAP_SERVERS);
@@ -39,4 +43,5 @@ public class TopicUtils {
         adminClient.close();
         return true;
     }
+
 }

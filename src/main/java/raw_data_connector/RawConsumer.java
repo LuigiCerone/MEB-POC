@@ -46,13 +46,16 @@ public class RawConsumer implements Runnable {
             consumer.subscribe(topics);
 
             while (true) {
-                ConsumerRecords<String, String> records = consumer.poll(Long.MAX_VALUE);
-                for (ConsumerRecord<String, String> record : records) {
+                ConsumerRecords<String, RawEvent> records = consumer.poll(Long.MAX_VALUE);
+                for (ConsumerRecord<String, RawEvent> record : records) {
                     Map<String, Object> data = new HashMap<>();
                     data.put("partition", record.partition());
                     data.put("offset", record.offset());
                     data.put("value", record.value());
                     System.out.println(this.id + ": " + data);
+
+                    // Now we need to publish the raw_data database entry in the specific topic (which is the category).
+                    record.get
                 }
             }
         } catch (WakeupException e) {
