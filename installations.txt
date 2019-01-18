@@ -13,9 +13,13 @@ curl -i -X POST -H "Accept:application/json" \
             "database.server.name": "sa18",
             "database.history.kafka.bootstrap.servers": "localhost:9092",
             "database.history.kafka.topic": "dbhistory.sa18" ,
-            "include.schema.changes": "true"
+            "include.schema.changes": "true",
+            "max.request.size":"104857600"
        }
     }'
 
 
 ./kafka-configs.sh --zookeeper localhost:2181 --entity-type topics --entity-name sa18.raw_data.analytics --alter --add-config max.message.bytes=104857600
+
+Could be useful in future:
+props.put(ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG, "104857600");
