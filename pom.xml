@@ -60,6 +60,14 @@
         </dependency>
 
 
+        <!-- https://mvnrepository.com/artifact/org.apache.streams/streams-config -->
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-streams</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+
+
     </dependencies>
 
     <groupId>linux_fellows</groupId>

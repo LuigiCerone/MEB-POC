@@ -55,7 +55,7 @@ public class RawConsumer implements Runnable {
                     System.out.println(this.id + ": " + data);
 
                     // Now we need to publish the raw_data database entry in the specific topic (which is the category).
-                    record.get
+//                    record.get
                 }
             }
         } catch (WakeupException e) {
