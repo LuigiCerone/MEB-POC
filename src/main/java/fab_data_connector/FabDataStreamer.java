@@ -12,8 +12,6 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.Produced;
 import org.apache.kafka.streams.processor.RecordContext;
 import org.apache.kafka.streams.processor.TopicNameExtractor;
-import raw_data_connector.CustomRawDataEventDeserializer;
-import raw_data_connector.RawEvent;
 import utils.JsonPOJODeserializer;
 import utils.JsonPOJOSerializer;
 
