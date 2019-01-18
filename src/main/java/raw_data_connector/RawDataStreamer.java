@@ -21,7 +21,6 @@ import java.util.Properties;
 public class RawDataStreamer {
 
     public final static String INPUT_TOPIC = "sa18.raw_data.analytics";
-    //    public final static String TOPIC = "consumer-tutorial";
     public final static String BOOTSTRAP_SERVERS = "localhost:9092";
 
     private int id;
@@ -29,19 +28,18 @@ public class RawDataStreamer {
     private List<String> outputTopics;
     private KafkaStreams kafkaStreams;
 
+
     public RawDataStreamer(int id, String inputTopic) {
         this.id = id;
         this.inputTopic = inputTopic;
 
+        // Configure the stream.
         Properties streamsConfiguration = new Properties();
 
         streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "test");
         streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
 
-//        streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
-//        streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.serdeFrom(CustomRawDataEventDeserializer.class));
-
-        // TODO: the following can be removed with a serialization factory
+        // Configure the serialization and deserialization.
         Map<String, Object> serdeProps = new HashMap<>();
 
         final Serializer<RawEvent> rawEventSerializer = new JsonPOJOSerializer<>();
@@ -52,11 +50,16 @@ public class RawDataStreamer {
         serdeProps.put("JsonPOJOClass", RawEvent.class);
         rawEventDeserializer.configure(serdeProps, false);
 
+        // Create the SerDe (SerializationDeserialization) object that Kafka Stream need.
         final Serde<RawEvent> rawEventSerde = Serdes.serdeFrom(rawEventSerializer, rawEventDeserializer);
 
         StreamsBuilder builder = new StreamsBuilder();
+
+        // Create a stream over the input_topic
         KStream<String, RawEvent> rawDataEntries = builder.stream(inputTopic, Consumed.with(Serdes.String(), rawEventSerde));
 
+        // Insert all the input stream into the output specific topic by using a topic name extractor.
+        // If the topic is missing it will be automatically created.
         rawDataEntries.to("test", Produced.with(Serdes.String(), rawEventSerde));
 
         this.kafkaStreams = new KafkaStreams(builder.build(), streamsConfiguration);
@@ -65,4 +68,5 @@ public class RawDataStreamer {
     public void start() {
         this.kafkaStreams.start();
     }
+
 }

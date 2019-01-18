@@ -10,15 +10,14 @@ import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.Produced;
+import org.apache.kafka.streams.processor.RecordContext;
+import org.apache.kafka.streams.processor.TopicNameExtractor;
 import raw_data_connector.CustomRawDataEventDeserializer;
 import raw_data_connector.RawEvent;
 import utils.JsonPOJODeserializer;
 import utils.JsonPOJOSerializer;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 public class FabDataStreamer {
 
@@ -28,22 +27,21 @@ public class FabDataStreamer {
 
     private int id;
     private String inputTopic;
-    private List<String> outputTopics;
+    private Set<String> outputTopics;
     private KafkaStreams kafkaStreams;
 
     public FabDataStreamer(int id, String inputTopic) {
         this.id = id;
         this.inputTopic = inputTopic;
+        this.outputTopics = new HashSet<>();
 
+        // Configure the stream.
         Properties streamsConfiguration = new Properties();
 
         streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "test");
         streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
 
-//        streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
-//        streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.serdeFrom(CustomRawDataEventDeserializer.class));
-
-        // TODO: the following can be removed with a serialization factory
+        // Configure the serialization and deserialization.
         Map<String, Object> serdeProps = new HashMap<>();
 
         final Serializer<FabEvent> fabEventSerializer = new JsonPOJOSerializer<>();
@@ -54,12 +52,26 @@ public class FabDataStreamer {
         serdeProps.put("JsonPOJOClass", FabEvent.class);
         fabEventDeserializer.configure(serdeProps, false);
 
+        // Create the SerDe (SerializationDeserialization) object that Kafka Stream need.
         final Serde<FabEvent> fabEventSerde = Serdes.serdeFrom(fabEventSerializer, fabEventDeserializer);
 
         StreamsBuilder builder = new StreamsBuilder();
-        KStream<String, FabEvent> rawDataEntries = builder.stream(inputTopic, Consumed.with(Serdes.String(), fabEventSerde));
 
-        rawDataEntries.to("test", Produced.with(Serdes.String(), fabEventSerde));
+        // Create a stream over the input_topic
+        KStream<String, FabEvent> fabDataEntries = builder.stream(inputTopic, Consumed.with(Serdes.String(), fabEventSerde));
+
+        // Extract the topic from the message, because a message is published in the category type topic.
+        TopicNameExtractor<String, FabEvent> topicNameExtractor = new TopicNameExtractor<String, FabEvent>() {
+            @Override
+            public String extract(String s, FabEvent fabEvent, RecordContext recordContext) {
+                outputTopics.add(fabEvent.getHoldType());
+                return fabEvent.getHoldType();
+            }
+        };
+
+        // Insert all the input stream into the output specific topic by using a topic name extractor.
+        // If the topic is missing it will be automatically created.
+        fabDataEntries.to(topicNameExtractor, Produced.with(Serdes.String(), fabEventSerde));
 
         this.kafkaStreams = new KafkaStreams(builder.build(), streamsConfiguration);
     }
