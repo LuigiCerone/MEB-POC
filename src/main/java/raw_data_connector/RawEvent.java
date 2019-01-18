@@ -102,14 +102,16 @@ public class RawEvent {
 
     @JsonSetter("payload")
     public void unwrap(Map<String, Object> payload) {
-        HashMap<String, Object> after = (HashMap<String, Object>) payload.get("after");
+        if (payload.get("after") != null) {
+            HashMap<String, Object> after = (HashMap<String, Object>) payload.get("after");
 
-        this.setEquipID(Long.parseLong((String) after.get(EQUIP_ID), 16));
-        this.setEquipName((String) after.get(EQUIP_NAME));
-        this.setRecipeID(Long.parseLong((String) after.get(RECIPE_ID), 16));
-        this.setRecipeName((String) after.get(RECIPE_NAME));
-        this.setStepID(Long.parseLong((String) after.get(STEP_ID), 16));
-        this.setStepName((String) after.get(STEP_NAME));
+            this.setEquipID(Long.parseLong((String) after.get(EQUIP_ID), 16));
+            this.setEquipName((String) after.get(EQUIP_NAME));
+            this.setRecipeID(Long.parseLong((String) after.get(RECIPE_ID), 16));
+            this.setRecipeName((String) after.get(RECIPE_NAME));
+            this.setStepID(Long.parseLong((String) after.get(STEP_ID), 16));
+            this.setStepName((String) after.get(STEP_NAME));
+        }
 //        this.setFakeData(Long.parseLong((String) after.get("step"), 16));
     }
 

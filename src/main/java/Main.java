@@ -1,5 +1,6 @@
 import fab_data_connector.FabConsumer;
 import raw_data_connector.RawConsumer;
+import utils.TopicUtils;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -11,6 +12,8 @@ public class Main {
 //        fabConsumer.run();
 
         RawConsumer rawConsumer = new RawConsumer(12346, "test", Arrays.asList(RawConsumer.TOPIC));
-        rawConsumer.run();
+//        rawConsumer.run();
+
+//        TopicUtils.createTopic("testttt", 1, 1);
     }
 }
