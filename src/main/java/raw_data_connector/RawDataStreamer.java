@@ -16,10 +16,7 @@ import org.apache.kafka.streams.processor.TopicNameExtractor;
 import utils.JsonPOJODeserializer;
 import utils.JsonPOJOSerializer;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 public class RawDataStreamer {
 
@@ -28,7 +25,7 @@ public class RawDataStreamer {
 
     private int id;
     private String inputTopic;
-    private List<String> outputTopics;
+    private Set<String> outputTopics;
     private KafkaStreams kafkaStreams;
 
     private String[] mappings = {"equip_analytics", "recipe_analytics", "step_analytics"};
@@ -37,6 +34,7 @@ public class RawDataStreamer {
     public RawDataStreamer(int id, String inputTopic) {
         this.id = id;
         this.inputTopic = inputTopic;
+        this.outputTopics = new HashSet<>();
 
         // Configure the stream.
         Properties streamsConfiguration = new Properties();
@@ -67,7 +65,6 @@ public class RawDataStreamer {
         TopicNameExtractor<String, RawEvent> topicNameExtractor = new TopicNameExtractor<String, RawEvent>() {
             @Override
             public String extract(String s, RawEvent rawEvent, RecordContext recordContext) {
-
                 outputTopics.add(mappings[rawEvent.getType()]);
                 return mappings[rawEvent.getType()];
             }

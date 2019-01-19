@@ -74,7 +74,7 @@ public class RawEvent {
 
             this.setOid(Long.parseLong((String) after.get(OID), 16));
             this.setNameTranslation((String) after.get(NAME_TRANSLATION));
-            this.setType(Integer.parseInt((String) after.get(TYPE)));
+            this.setType(Integer.parseInt(String.valueOf(after.get(TYPE))));
         }
 //        this.setFakeData(Long.parseLong((String) after.get("step"), 16));
     }

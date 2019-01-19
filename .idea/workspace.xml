@@ -3,10 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="b20c40b9-f593-4574-a5a4-4e979bd510e4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simulator/DB_dumps/fab_data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/DB_dumps/fab_data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simulator/DB_dumps/raw_data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/DB_dumps/raw_data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simulator/DBs_Simulator.jar" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/DBs_Simulator.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fab_data_connector/FabEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fab_data_connector/FabEvent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raw_data_connector/RawDataStreamer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raw_data_connector/RawDataStreamer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raw_data_connector/RawEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raw_data_connector/RawEvent.java" afterDir="false" />
     </list>
@@ -73,8 +69,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/raw_data_connector/RawDataStreamer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="386">
-              <caret line="71" column="52" selection-start-line="71" selection-start-column="52" selection-end-line="71" selection-end-column="52" />
+            <state relative-caret-position="125">
+              <caret line="67" selection-start-line="67" selection-end-line="67" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2679#2968#0" expanded="true" />
@@ -85,10 +81,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="das://f6fb07c0-2333-49dd-a8e8-c5546890e655/schema/raw_data/table/analytics">
+          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+            <state>
+              <filtering enabled="true" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/installations.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="16" column="42" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="42" />
+            <state relative-caret-position="360">
+              <caret line="24" column="18" selection-start-line="24" selection-start-column="18" selection-end-line="24" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -108,8 +113,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/raw_data_connector/RawEvent.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="491">
-              <caret line="80" selection-start-line="80" selection-end-line="80" />
+            <state relative-caret-position="210">
+              <caret line="76" column="73" selection-start-line="76" selection-start-column="73" selection-end-line="76" selection-end-column="73" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#936#937#0" expanded="true" />
@@ -164,8 +169,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="13" selection-start-line="13" selection-end-line="13" />
+            <state relative-caret-position="150">
+              <caret line="10" column="34" lean-forward="true" selection-start-line="10" selection-start-column="34" selection-end-line="10" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -173,8 +178,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/fab_data_connector/FabDataStreamer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="341">
-              <caret line="67" column="10" lean-forward="true" selection-start-line="60" selection-start-column="8" selection-end-line="67" selection-end-column="10" />
+            <state relative-caret-position="146">
+              <caret line="27" column="24" selection-start-line="27" selection-end-line="28" />
             </state>
           </provider>
         </entry>
@@ -320,7 +325,7 @@
     <property name="DatabaseDriversLRU" value="mysql" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547886110087" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547886505200" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/Edit As Language" value="GenericSQL" />
     <property name="database.console.LAST_STATE" value="false" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -393,12 +398,12 @@
       <workItem from="1547829642081" duration="154000" />
       <workItem from="1547837669705" duration="182000" />
       <workItem from="1547884314016" duration="22000" />
-      <workItem from="1547885650960" duration="460000" />
+      <workItem from="1547885650960" duration="853000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="40712000" />
+    <option name="totallyTimeSpent" value="41105000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -422,7 +427,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32866043" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.34423676" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.34423676" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39719626" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -442,7 +447,7 @@
       <window_info anchor="right" id="Maven" order="5" />
       <window_info anchor="right" id="Capture Analysis" order="6" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
-      <window_info active="true" anchor="right" id="Database" order="8" visible="true" weight="0.09048724" />
+      <window_info anchor="right" id="Database" order="8" visible="true" weight="0.09048724" />
       <window_info anchor="right" id="Bean Validation" order="9" />
     </layout>
     <layout-to-restore>
@@ -648,13 +653,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/fab_data_connector/FabConsumer.java" />
-    <entry file="file://$PROJECT_DIR$/installations.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="42" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/utils/TopicUtils.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -662,13 +660,6 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" selection-start-line="13" selection-end-line="13" />
         </state>
       </provider>
     </entry>
@@ -684,17 +675,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://f6fb07c0-2333-49dd-a8e8-c5546890e655/schema/raw_data/table/analytics">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
+    <entry file="file://$PROJECT_DIR$/simulator/DB_dumps/fab_data.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulator/DB_dumps/raw_data.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/installations.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" column="18" selection-start-line="24" selection-start-column="18" selection-end-line="24" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="34" lean-forward="true" selection-start-line="10" selection-start-column="34" selection-end-line="10" selection-end-column="34" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/raw_data_connector/RawEvent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="491">
-          <caret line="80" selection-start-line="80" selection-end-line="80" />
+        <state relative-caret-position="210">
+          <caret line="76" column="73" selection-start-line="76" selection-start-column="73" selection-end-line="76" selection-end-column="73" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#936#937#0" expanded="true" />
@@ -715,29 +727,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/fab_data_connector/FabDataStreamer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="341">
-          <caret line="67" column="10" lean-forward="true" selection-start-line="60" selection-start-column="8" selection-end-line="67" selection-end-column="10" />
+        <state relative-caret-position="146">
+          <caret line="27" column="24" selection-start-line="27" selection-end-line="28" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/simulator/DB_dumps/fab_data.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simulator/DB_dumps/raw_data.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
+    <entry file="das://f6fb07c0-2333-49dd-a8e8-c5546890e655/schema/raw_data/table/analytics">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/raw_data_connector/RawDataStreamer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="386">
-          <caret line="71" column="52" selection-start-line="71" selection-start-column="52" selection-end-line="71" selection-end-column="52" />
+        <state relative-caret-position="125">
+          <caret line="67" selection-start-line="67" selection-end-line="67" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2679#2968#0" expanded="true" />
