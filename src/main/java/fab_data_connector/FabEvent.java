@@ -2,6 +2,7 @@ package fab_data_connector;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import org.apache.kafka.common.serialization.StringDeserializer;
 
 import java.sql.Date;
 import java.util.HashMap;
@@ -92,7 +93,7 @@ public class FabEvent {
         this.setStepID(Long.parseLong((String) after.get(RECIPE_ID), 16));
         this.setHoldType((String) after.get(HOLD_TYPE));
         this.setHoldFlag(Boolean.parseBoolean(String.valueOf(after.get(HOLD_FLAG))));
-        this.setDateTime(Long.parseLong((String) after.get(DATE_TIME)));
+        this.setDateTime(Long.parseLong(String.valueOf(after.get(DATE_TIME))));
     }
 
     @Override

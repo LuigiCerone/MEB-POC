@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.sun.deploy.security.ValidationState;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,5 +78,15 @@ public class RawEvent {
             this.setType(Integer.parseInt(String.valueOf(after.get(TYPE))));
         }
 //        this.setFakeData(Long.parseLong((String) after.get("step"), 16));
+    }
+
+    @Override
+    public String toString() {
+        return "RawEvent{" +
+                "oid=" + oid +
+                ", nameTranslation='" + nameTranslation + '\'' +
+                ", type=" + type +
+                ", fakeData=" + Arrays.toString(fakeData) +
+                '}';
     }
 }
