@@ -11,6 +11,6 @@ create table event
   step     varchar(30)          null,
   holdtype varchar(30)          not null,
   holdflag tinyint(1) default 0 not null,
-  datetime date                 not null
+  datetime bigint               not null
 );
 

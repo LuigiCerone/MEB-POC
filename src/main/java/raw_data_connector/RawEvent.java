@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
+import com.sun.deploy.security.ValidationState;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,85 +18,45 @@ public class RawEvent {
 
     private transient String TABLE_NAME = "analytics";
     private transient String ID = "id";
-    private transient String EQUIP_ID = "equipId";
-    private transient String EQUIP_NAME = "equipName";
-    private transient String RECIPE_ID = "recipeId";
-    private transient String RECIPE_NAME = "recipeName";
-    private transient String STEP_ID = "stepId";
-    private transient String STEP_NAME = "stepName";
+    private transient String OID = "oid";
+    private transient String NAME_TRANSLATION = "nameTranslation";
+    private transient String TYPE = "type";
     private transient String FAKE_DATA = "fakeData";
 
 
     //    private int PK_ID;
 
-    private Long equipID;
-    private String equipName;
-    private Long recipeID;
-    private String recipeName;
-    private Long stepID;
-    private String stepName;
+    private Long oid;
+    private String nameTranslation;
+    private int type;
     private char[] fakeData;
 
     // Don't remove, required by Jackson.
     public RawEvent() {
     }
 
-    public RawEvent(Long equipID, String equipName, Long recipeID, String recipeName, Long stepID, String stepName, char[] fakeData) {
-        this.equipID = equipID;
-        this.equipName = equipName;
-        this.recipeID = recipeID;
-        this.recipeName = recipeName;
-        this.stepID = stepID;
-        this.stepName = stepName;
-        this.fakeData = fakeData;
+    public Long getOid() {
+        return oid;
     }
 
-    public Long getEquipID() {
-        return equipID;
+    public void setOid(Long oid) {
+        this.oid = oid;
     }
 
-    public void setEquipID(Long equipID) {
-        this.equipID = equipID;
+    public String getNameTranslation() {
+        return nameTranslation;
     }
 
-    public String getEquipName() {
-        return equipName;
+    public void setNameTranslation(String nameTranslation) {
+        this.nameTranslation = nameTranslation;
     }
 
-    public void setEquipName(String equipName) {
-        this.equipName = equipName;
+    public int getType() {
+        return type;
     }
 
-    public Long getRecipeID() {
-        return recipeID;
-    }
-
-    public void setRecipeID(Long recipeID) {
-        this.recipeID = recipeID;
-    }
-
-    public String getRecipeName() {
-        return recipeName;
-    }
-
-    public void setRecipeName(String recipeName) {
-        this.recipeName = recipeName;
-    }
-
-    public Long getStepID() {
-        return stepID;
-    }
-
-    public void setStepID(Long stepID) {
-        this.stepID = stepID;
-    }
-
-    public String getStepName() {
-        return stepName;
-    }
-
-    public void setStepName(String stepName) {
-        this.stepName = stepName;
+    public void setType(int type) {
+        this.type = type;
     }
 
     public char[] getFakeData() {
@@ -111,19 +72,10 @@ public class RawEvent {
         if (payload.get("after") != null) {
             HashMap<String, Object> after = (HashMap<String, Object>) payload.get("after");
 
-            this.setEquipID(Long.parseLong((String) after.get(EQUIP_ID), 16));
-            this.setEquipName((String) after.get(EQUIP_NAME));
-            this.setRecipeID(Long.parseLong((String) after.get(RECIPE_ID), 16));
-            this.setRecipeName((String) after.get(RECIPE_NAME));
-            this.setStepID(Long.parseLong((String) after.get(STEP_ID), 16));
-            this.setStepName((String) after.get(STEP_NAME));
+            this.setOid(Long.parseLong((String) after.get(OID), 16));
+            this.setNameTranslation((String) after.get(NAME_TRANSLATION));
+            this.setType(Integer.parseInt((String) after.get(TYPE)));
         }
 //        this.setFakeData(Long.parseLong((String) after.get("step"), 16));
-    }
-
-    @Override
-    public String toString() {
-        Gson gson = new Gson();
-        return gson.toJson(this);
     }
 }

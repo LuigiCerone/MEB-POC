@@ -27,7 +27,7 @@ public class FabEvent {
     private Long stepID;
     private String holdType;
     private boolean holdFlag;
-    private Date dateTime;
+    private long dateTime;
 
     // Don't remove, required by Jackson.
     public FabEvent() {
@@ -74,12 +74,12 @@ public class FabEvent {
         this.holdFlag = holdFlag;
     }
 
-    public Date getDateTime() {
+    public long getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(int dateTime) {
-        this.dateTime = new Date(dateTime);
+    public void setDateTime(long dateTime) {
+        this.dateTime = dateTime;
     }
 
 
@@ -92,7 +92,7 @@ public class FabEvent {
         this.setStepID(Long.parseLong((String) after.get(RECIPE_ID), 16));
         this.setHoldType((String) after.get(HOLD_TYPE));
         this.setHoldFlag(Boolean.parseBoolean(String.valueOf(after.get(HOLD_FLAG))));
-        this.setDateTime(Integer.parseInt(String.valueOf(after.get(DATE_TIME))));
+        this.setDateTime(Long.parseLong((String) after.get(DATE_TIME)));
     }
 
     @Override

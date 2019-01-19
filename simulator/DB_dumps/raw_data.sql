@@ -4,18 +4,13 @@ use raw_data;
 
 create table analytics
 (
-  id       int auto_increment
+  id              int auto_increment
     primary key,
 
-  equipId    varchar(30)          not null,
-  equipName    varchar(30)          not null,
+  oid             varchar(30) not null,
+  nameTranslation varchar(30) not null,
+  type            int         not null, # 0 means equip, 1 means recipe, 2 means step translation.
 
-  recipeId   varchar(30)          not null,
-  recipeName   varchar(30)          not null,
-
-  stepId     varchar(30)          null,
-  stepName     varchar(30)          null,
-
-  fakeData mediumtext not null
+  fakeData        mediumtext  not null
 );
 
