@@ -63,6 +63,7 @@ public class FabDataStreamer {
             @Override
             public String extract(String s, FabEvent fabEvent, RecordContext recordContext) {
                 outputTopics.add(fabEvent.getHoldType());
+                System.out.println("Using topic: " + fabEvent.getHoldType());
                 return fabEvent.getHoldType();
             }
         };

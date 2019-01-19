@@ -34,24 +34,24 @@ public class FabEvent {
     public FabEvent() {
     }
 
-    public Long getEquipID() {
-        return equipID;
+    public String getEquipID() {
+        return Long.toHexString(equipID).toUpperCase();
     }
 
     public void setEquipID(Long equipID) {
         this.equipID = equipID;
     }
 
-    public Long getRecipeID() {
-        return recipeID;
+    public String getRecipeID() {
+        return Long.toHexString(recipeID).toUpperCase();
     }
 
     public void setRecipeID(Long recipeID) {
         this.recipeID = recipeID;
     }
 
-    public Long getStepID() {
-        return stepID;
+    public String getStepID() {
+        return Long.toHexString(stepID).toUpperCase();
     }
 
     public void setStepID(Long stepID) {
@@ -86,7 +86,12 @@ public class FabEvent {
 
     @JsonSetter("payload")
     public void unwrap(Map<String, Object> payload) {
-        HashMap<String, Object> after = (HashMap<String, Object>) payload.get("after");
+        HashMap<String, Object> after = null;
+        if (payload.get("after") != null) {
+            after = (HashMap<String, Object>) payload.get("after");
+        } else if (payload.get("before") != null) {
+            after = (HashMap<String, Object>) payload.get("before");
+        }
 
         this.setEquipID(Long.parseLong((String) after.get(EQUIP_ID), 16));
         this.setRecipeID(Long.parseLong((String) after.get(RECIPE_ID), 16));

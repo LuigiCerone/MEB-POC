@@ -1,4 +1,5 @@
 import fab_data_connector.FabDataStreamer;
+import message_stream.StreamProcessor;
 import raw_data_connector.RawDataStreamer;
 
 public class Main {
@@ -10,5 +11,8 @@ public class Main {
 
         FabDataStreamer fabDataStreamer = new FabDataStreamer(123458, FabDataStreamer.INPUT_TOPIC);
         fabDataStreamer.start();
+
+        StreamProcessor streamProcessor = new StreamProcessor(123459);
+        streamProcessor.start();
     }
 }
