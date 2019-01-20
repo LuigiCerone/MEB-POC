@@ -2,9 +2,8 @@ package message_stream;
 
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.Transformer;
-import org.apache.kafka.streams.kstream.ValueTransformer;
-import org.apache.kafka.streams.kstream.ValueTransformerSupplier;
 import org.apache.kafka.streams.processor.ProcessorContext;
+import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.KeyValueStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,12 +22,6 @@ public class FabDataTransformer implements Transformer<String, FabEvent, KeyValu
         this.recipeState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.RECIPE_TRANSLATION_STATE);
         this.stepState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.STEP_TRANSLATION_STATE);
 
-        //                        KeyValueIterator<String, RawEvent> iter = this.eqipState.all();
-
-//                        while (iter.hasNext()) {
-//                            KeyValue<String, RawEvent> entry = iter.next();
-////                            context.forward(entry.key, entry.value.toString());
-//                        }
     }
 
     @Override
@@ -38,13 +31,54 @@ public class FabDataTransformer implements Transformer<String, FabEvent, KeyValu
         FabTranslatedEvent fabTranslatedEvent = new FabTranslatedEvent(fabEvent);
         System.out.println(fabTranslatedEvent);
 
+        tryToTranslate(0, fabTranslatedEvent);
+        tryToTranslate(1, fabTranslatedEvent);
+        tryToTranslate(2, fabTranslatedEvent);
 
-//        if (fabTranslatedEvent.isTranslated())
-//            return KeyValue.pair(s, fabTranslatedEvent);
-//        else return null;
+        if (fabTranslatedEvent.isTranslated())
+            return KeyValue.pair(s, fabTranslatedEvent);
+        else return null;
 
-        return KeyValue.pair(s, fabTranslatedEvent);
+//        return KeyValue.pair(s, fabTranslatedEvent);
 
+    }
+
+    // type=0 -> equip, type=1 -> recipe, type=3 -> step.
+    private void tryToTranslate(int type, FabTranslatedEvent fabTranslatedEvent) {
+        KeyValueStore<String, RawEvent> kTable = null;
+        String oidToTranslate = null;
+
+        if (type == 0) {
+            kTable = this.eqipState;
+            oidToTranslate = fabTranslatedEvent.getEquipID();
+        } else if (type == 1) {
+            kTable = this.recipeState;
+            oidToTranslate = fabTranslatedEvent.getRecipeID();
+        } else if (type == 2) {
+            kTable = this.stepState;
+            oidToTranslate = fabTranslatedEvent.getStepID();
+        }
+
+        KeyValueIterator<String, RawEvent> iter = kTable.all();
+
+        String nameTranslated = null;
+        while (iter.hasNext()) {
+            KeyValue<String, RawEvent> entry = iter.next();
+            if (entry.value.getOid().toUpperCase().equals(oidToTranslate.toUpperCase())) {
+                nameTranslated = entry.value.getNameTranslation();
+            }
+//                            context.forward(entry.key, entry.value.toString());
+        }
+
+        if (nameTranslated != null) {
+            if (type == 0) {
+                fabTranslatedEvent.setEquipName(nameTranslated);
+            } else if (type == 1) {
+                fabTranslatedEvent.setRecipeName(nameTranslated);
+            } else if (type == 2) {
+                fabTranslatedEvent.setStepName(nameTranslated);
+            }
+        }
     }
 
     @Override
