@@ -8,6 +8,7 @@ import org.apache.kafka.common.serialization.Serializer;
 import java.util.Map;
 
 public class FabEventSerde implements Serde<FabEvent> {
+
     private JsonPOJOSerializer<FabEvent> serializer = new JsonPOJOSerializer<FabEvent>();
     private JsonPOJODeserializer<FabEvent> deserializer = new JsonPOJODeserializer<FabEvent>();
 

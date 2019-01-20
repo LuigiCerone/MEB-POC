@@ -20,24 +20,24 @@ public class FabEvent {
     public FabEvent() {
     }
 
-    public Long getEquipID() {
-        return equipID;
+    public String getEquipID() {
+        return Long.toHexString(equipID).toUpperCase();
     }
 
     public void setEquipID(String equipID) {
         this.equipID = Long.parseLong((String) equipID, 16);
     }
 
-    public Long getRecipeID() {
-        return recipeID;
+    public String getRecipeID() {
+        return Long.toHexString(recipeID).toUpperCase();
     }
 
     public void setRecipeID(String recipeID) {
         this.recipeID = Long.parseLong(String.valueOf(recipeID), 16);
     }
 
-    public Long getStepID() {
-        return stepID;
+    public String getStepID() {
+        return Long.toHexString(stepID).toUpperCase();
     }
 
     public void setStepID(String stepID) {

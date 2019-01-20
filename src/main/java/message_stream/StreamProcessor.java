@@ -1,5 +1,6 @@
 package message_stream;
 
+import fab_data_connector.FabConnectEvent;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
@@ -11,7 +12,9 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.*;
 import org.apache.kafka.streams.processor.ProcessorContext;
+import org.apache.kafka.streams.processor.RecordContext;
 import org.apache.kafka.streams.processor.StateStore;
+import org.apache.kafka.streams.processor.TopicNameExtractor;
 import org.apache.kafka.streams.state.*;
 import org.apache.kafka.streams.state.internals.InMemoryKeyValueStore;
 import raw_data_connector.RawConnectEvent;
@@ -22,9 +25,7 @@ import utils.JsonPOJODeserializer;
 import utils.JsonPOJOSerializer;
 
 import java.security.KeyPair;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class StreamProcessor {
@@ -32,14 +33,17 @@ public class StreamProcessor {
     public static String EQUIP_TRANSLATION_STATE = "equip_analytics";
     public static String RECIPE_TRANSLATION_STATE = "recipe_analytics";
     public static String STEP_TRANSLATION_STATE = "step_analytics";
+    public static String OUTPUT_TOPIC_PREFIX = "translated_";
 
     private int id;
     private KafkaStreams streamProcessor;
+    private Set<String> outputTopics;
     private String[] translation_topics;
 
     public StreamProcessor(int id) {
         this.id = id;
         this.translation_topics = RawDataStreamer.MAPPINGS;
+        this.outputTopics = new HashSet<>();
 
         // Configure the stream.
         Properties streamsConfiguration = new Properties();
@@ -97,10 +101,11 @@ public class StreamProcessor {
         // Create the SerDe (SerializationDeserialization) object that Kafka Stream need.
         final Serde<RawEvent> rawEventSerde = Serdes.serdeFrom(rawEventSerializer, rawEventDeserializer);
 
-        // Create a table over the raw_data translation topics.
+        // Create a table over the raw_data translation topics and materialize it (i.e. create a table in RAM or in DISK).
         // One for the equipOID translation into names.
-
-
+        // This for a table in the disk.
+        // KeyValueBytesStoreSupplier equipStoreSupplier = Stores.persistentKeyValueStore(EQUIP_TRANSLATION_STATE);
+        // This for a table in RAM.
         KeyValueBytesStoreSupplier equipStoreSupplier = Stores.inMemoryKeyValueStore(EQUIP_TRANSLATION_STATE);
 
         KTable<String, RawEvent> equipTable = builder.table(
@@ -128,91 +133,70 @@ public class StreamProcessor {
 //        builder.addStateStore(Stores.keyValueStoreBuilder(stepStoreSupplier, Serdes.String(), rawEventSerde));
 
 
-//        ValueTransformerSupplier valueTransformerSupplier = new ValueTransformerSupplier() {
+        // Don't delete, maybe this could allow use to use smaller msg.
+//        ValueTransformerSupplier<FabEvent, FabEvent> valueTransformerSupplier = new ValueTransformerSupplier<FabEvent, FabEvent>() {
 //            @Override
-//            public ValueTransformer get() {
-//                return new FabDataTransformer();
-//            }
-//        };
-
-        ValueTransformerSupplier<FabEvent, FabEvent> valueTransformerSupplier = new ValueTransformerSupplier<FabEvent, FabEvent>() {
-            @Override
-            public ValueTransformer<FabEvent, FabEvent> get() {
-                return new ValueTransformer<FabEvent, FabEvent>() {
-                    private KeyValueStore<String, RawEvent> eqipState;
-                    private KeyValueStore<String, RawEvent> recipeState;
-                    private KeyValueStore<String, RawEvent> stepState;
-
-
-                    @Override
-                    public void init(ProcessorContext processorContext) {
-                        this.eqipState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.EQUIP_TRANSLATION_STATE);
-                        KeyValueIterator<String, RawEvent> iter = this.eqipState.all();
-
-                        while (iter.hasNext()) {
-                            KeyValue<String, RawEvent> entry = iter.next();
-//                            context.forward(entry.key, entry.value.toString());
-                        }
-                        this.recipeState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.RECIPE_TRANSLATION_STATE);
-                        this.stepState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.STEP_TRANSLATION_STATE);
-
-//                        logger.debug("aa" + eqipState);
-                    }
-
-                    @Override
-                    public FabEvent transform(FabEvent fabEvent) {
-                        System.out.println(fabEvent.toString());
-                        return fabEvent;
-                    }
-
-                    @Override
-                    public void close() {
-
-                    }
-                };
-            }
-        };
-
-        TransformerSupplier<String, FabEvent, KeyValue<String, FabEvent>> transformerSupplier = new TransformerSupplier<String, FabEvent, KeyValue<String, FabEvent>>() {
-            @Override
-            public Transformer<String, FabEvent, KeyValue<String, FabEvent>> get() {
-                return new Transformer<String, FabEvent, KeyValue<String, FabEvent>>() {
-
-                    private KeyValueStore<String, RawEvent> eqipState;
-                    private KeyValueStore<String, RawEvent> recipeState;
-                    private KeyValueStore<String, RawEvent> stepState;
-
-                    @Override
-                    public void init(ProcessorContext processorContext) {
-                        this.eqipState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.EQUIP_TRANSLATION_STATE);
+//            public ValueTransformer<FabEvent, FabEvent> get() {
+//                return new ValueTransformer<FabEvent, FabEvent>() {
+//                    private KeyValueStore<String, RawEvent> eqipState;
+//                    private KeyValueStore<String, RawEvent> recipeState;
+//                    private KeyValueStore<String, RawEvent> stepState;
+//
+//
+//                    @Override
+//                    public void init(ProcessorContext processorContext) {
+//                        this.eqipState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.EQUIP_TRANSLATION_STATE);
 //                        KeyValueIterator<String, RawEvent> iter = this.eqipState.all();
-
+//
 //                        while (iter.hasNext()) {
 //                            KeyValue<String, RawEvent> entry = iter.next();
 ////                            context.forward(entry.key, entry.value.toString());
 //                        }
-                        this.recipeState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.RECIPE_TRANSLATION_STATE);
-                        this.stepState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.STEP_TRANSLATION_STATE);
-                    }
+//                        this.recipeState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.RECIPE_TRANSLATION_STATE);
+//                        this.stepState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.STEP_TRANSLATION_STATE);
+//
+////                        logger.debug("aa" + eqipState);
+//                    }
+//
+//                    @Override
+//                    public FabEvent transform(FabEvent fabEvent) {
+//                        System.out.println(fabEvent.toString());
+//                        return fabEvent;
+//                    }
+//
+//                    @Override
+//                    public void close() {
+//
+//                    }
+//                };
+//            }
+//        };
 
-                    @Override
-                    public KeyValue<String, FabEvent> transform(String s, FabEvent fabEvent) {
-                        System.out.println(fabEvent.toString());
-                        return KeyValue.pair(s, fabEvent);
-                    }
-
-                    @Override
-                    public void close() {
-
-                    }
-                };
+        // Obtain one instance of the FabDataTransformer.
+        TransformerSupplier<String, FabEvent, KeyValue<String, FabEvent>> transformerSupplier = new TransformerSupplier<String, FabEvent, KeyValue<String, FabEvent>>() {
+            @Override
+            public Transformer<String, FabEvent, KeyValue<String, FabEvent>> get() {
+                return new FabDataTransformer();
             }
         };
 
+        // Extract the topic from the message, because a message is published in the category type topic prefixed with specific text.
+        TopicNameExtractor<String, FabEvent> topicNameExtractor = new TopicNameExtractor<String, FabEvent>() {
+            @Override
+            public String extract(String s, FabEvent fabEvent, RecordContext recordContext) {
+                String topic = OUTPUT_TOPIC_PREFIX + fabEvent.getHoldType();
+                outputTopics.add(topic);
+//                System.out.println("Using topic: " + topic);
+                return topic;
+            }
+        };
+
+        // Transform each fab_data entry with the data coming from the raw_data topics and forward the result in the
+        // specific topic obtained with a topic extractor based on each row contents.
         fabDataEntries
 //                .transformValues(valueTransformerSupplier, EQUIP_TRANSLATION_STATE, RECIPE_TRANSLATION_STATE, STEP_TRANSLATION_STATE)
                 .transform(transformerSupplier, EQUIP_TRANSLATION_STATE, RECIPE_TRANSLATION_STATE, STEP_TRANSLATION_STATE)
-                .to("topic_test_test");
+                .to(topicNameExtractor);
 
         this.streamProcessor = new KafkaStreams(builder.build(), streamsConfiguration);
     }
