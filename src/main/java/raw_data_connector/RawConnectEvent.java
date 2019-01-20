@@ -2,10 +2,6 @@ package raw_data_connector;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.Expose;
-import com.sun.deploy.security.ValidationState;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,7 +9,7 @@ import java.util.Map;
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RawEvent {
+public class RawConnectEvent {
 
     // DB Column names.
 
@@ -33,12 +29,16 @@ public class RawEvent {
     private char[] fakeData;
 
     // Don't remove, required by Jackson.
-    public RawEvent() {
+    public RawConnectEvent() {
     }
 
-    public Long getOid() {
-        return oid;
+    public String getOid() {
+        return Long.toHexString(oid).toUpperCase();
     }
+
+//    public Long getOid() {
+//        return oid;
+//    }
 
     public void setOid(Long oid) {
         this.oid = oid;
@@ -82,7 +82,7 @@ public class RawEvent {
 
     @Override
     public String toString() {
-        return "RawEvent{" +
+        return "RawConnectEvent{" +
                 "oid=" + oid +
                 ", nameTranslation='" + nameTranslation + '\'' +
                 ", type=" + type +

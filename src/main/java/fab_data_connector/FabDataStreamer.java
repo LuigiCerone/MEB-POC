@@ -42,26 +42,26 @@ public class FabDataStreamer {
         // Configure the serialization and deserialization.
         Map<String, Object> serdeProps = new HashMap<>();
 
-        final Serializer<FabEvent> fabEventSerializer = new JsonPOJOSerializer<>();
-        serdeProps.put("JsonPOJOClass", FabEvent.class);
+        final Serializer<FabConnectEvent> fabEventSerializer = new JsonPOJOSerializer<>();
+        serdeProps.put("JsonPOJOClass", FabConnectEvent.class);
         fabEventSerializer.configure(serdeProps, false);
 
-        final Deserializer<FabEvent> fabEventDeserializer = new JsonPOJODeserializer<>();
-        serdeProps.put("JsonPOJOClass", FabEvent.class);
+        final Deserializer<FabConnectEvent> fabEventDeserializer = new JsonPOJODeserializer<>();
+        serdeProps.put("JsonPOJOClass", FabConnectEvent.class);
         fabEventDeserializer.configure(serdeProps, false);
 
         // Create the SerDe (SerializationDeserialization) object that Kafka Stream need.
-        final Serde<FabEvent> fabEventSerde = Serdes.serdeFrom(fabEventSerializer, fabEventDeserializer);
+        final Serde<FabConnectEvent> fabEventSerde = Serdes.serdeFrom(fabEventSerializer, fabEventDeserializer);
 
         StreamsBuilder builder = new StreamsBuilder();
 
         // Create a stream over the input_topic
-        KStream<String, FabEvent> fabDataEntries = builder.stream(inputTopic, Consumed.with(Serdes.String(), fabEventSerde));
+        KStream<String, FabConnectEvent> fabDataEntries = builder.stream(inputTopic, Consumed.with(Serdes.String(), fabEventSerde));
 
         // Extract the topic from the message, because a message is published in the category type topic.
-        TopicNameExtractor<String, FabEvent> topicNameExtractor = new TopicNameExtractor<String, FabEvent>() {
+        TopicNameExtractor<String, FabConnectEvent> topicNameExtractor = new TopicNameExtractor<String, FabConnectEvent>() {
             @Override
-            public String extract(String s, FabEvent fabEvent, RecordContext recordContext) {
+            public String extract(String s, FabConnectEvent fabEvent, RecordContext recordContext) {
                 outputTopics.add(fabEvent.getHoldType());
                 System.out.println("Using topic: " + fabEvent.getHoldType());
                 return fabEvent.getHoldType();

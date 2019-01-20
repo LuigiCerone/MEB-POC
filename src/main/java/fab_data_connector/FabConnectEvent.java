@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FabEvent {
+public class FabConnectEvent {
     // DB Column names.
     private final String TABLE_NAME = "event";
     private final String ID = "id";
@@ -31,7 +31,7 @@ public class FabEvent {
     private long dateTime;
 
     // Don't remove, required by Jackson.
-    public FabEvent() {
+    public FabConnectEvent() {
     }
 
     public String getEquipID() {
@@ -65,7 +65,6 @@ public class FabEvent {
     public void setHoldType(String holdType) {
         this.holdType = holdType;
     }
-
 
     public boolean isHoldFlag() {
         return holdFlag;
@@ -103,7 +102,7 @@ public class FabEvent {
 
     @Override
     public String toString() {
-        return "FabEvent{" +
+        return "FabConnectEvent{" +
                 "equipID=" + equipID +
                 ", recipeID=" + recipeID +
                 ", stepID=" + stepID +

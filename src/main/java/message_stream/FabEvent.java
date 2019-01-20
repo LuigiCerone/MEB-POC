@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FabRow {
+public class FabEvent {
     //    private int PK_ID;
 
     private Long equipID;
@@ -17,7 +17,7 @@ public class FabRow {
     private long dateTime;
 
     // Don't remove, required by Jackson.
-    public FabRow() {
+    public FabEvent() {
     }
 
     public Long getEquipID() {
@@ -71,7 +71,7 @@ public class FabRow {
 
     @Override
     public String toString() {
-        return "FabRow{" +
+        return "FabEvent{" +
                 "equipID=" + equipID +
                 ", recipeID=" + recipeID +
                 ", stepID=" + stepID +
