@@ -173,17 +173,17 @@ public class StreamProcessor {
 //        };
 
         // Obtain one instance of the FabDataTransformer.
-        TransformerSupplier<String, FabEvent, KeyValue<String, FabEvent>> transformerSupplier = new TransformerSupplier<String, FabEvent, KeyValue<String, FabEvent>>() {
+        TransformerSupplier<String, FabEvent, KeyValue<String, FabTranslatedEvent>> transformerSupplier = new TransformerSupplier<String, FabEvent, KeyValue<String, FabTranslatedEvent>>() {
             @Override
-            public Transformer<String, FabEvent, KeyValue<String, FabEvent>> get() {
+            public Transformer<String, FabEvent, KeyValue<String, FabTranslatedEvent>> get() {
                 return new FabDataTransformer();
             }
         };
 
         // Extract the topic from the message, because a message is published in the category type topic prefixed with specific text.
-        TopicNameExtractor<String, FabEvent> topicNameExtractor = new TopicNameExtractor<String, FabEvent>() {
+        TopicNameExtractor<String, FabTranslatedEvent> topicNameExtractor = new TopicNameExtractor<String, FabTranslatedEvent>() {
             @Override
-            public String extract(String s, FabEvent fabEvent, RecordContext recordContext) {
+            public String extract(String s, FabTranslatedEvent fabEvent, RecordContext recordContext) {
                 String topic = OUTPUT_TOPIC_PREFIX + fabEvent.getHoldType();
                 outputTopics.add(topic);
 //                System.out.println("Using topic: " + topic);
@@ -196,8 +196,8 @@ public class StreamProcessor {
         fabDataEntries
 //                .transformValues(valueTransformerSupplier, EQUIP_TRANSLATION_STATE, RECIPE_TRANSLATION_STATE, STEP_TRANSLATION_STATE)
                 .transform(transformerSupplier, EQUIP_TRANSLATION_STATE, RECIPE_TRANSLATION_STATE, STEP_TRANSLATION_STATE)
+                .through("translated_categories")
                 .to(topicNameExtractor);
-
         this.streamProcessor = new KafkaStreams(builder.build(), streamsConfiguration);
     }
 

@@ -1,23 +1,57 @@
 package message_stream;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonSetter;
-
-import java.util.HashMap;
-import java.util.Map;
-
-public class FabEvent {
-    //    private int PK_ID;
+// TODO Maybe we can box this class with FabEvent.
+public class FabTranslatedEvent {
 
     private Long equipID;
+    private String equipName;
     private Long recipeID;
+    private String recipeName;
     private Long stepID;
+    private String stepName;
     private String holdType;
     private boolean holdFlag;
     private long dateTime;
 
     // Don't remove, required by Jackson.
-    public FabEvent() {
+    public FabTranslatedEvent() {
+    }
+
+    public FabTranslatedEvent(FabEvent fabEvent) {
+        this.equipID = fabEvent.getEquipIDAsLong();
+        this.recipeID = fabEvent.getRecipeIDAsLong();
+        this.stepID = fabEvent.getStepIDAsLong();
+        this.holdType = fabEvent.getHoldType();
+        this.holdFlag = fabEvent.isHoldFlag();
+        this.dateTime = fabEvent.getDateTime();
+
+        this.equipName = "0";
+        this.recipeName = "0";
+        this.stepName = "0";
+    }
+
+    public String getEquipName() {
+        return equipName;
+    }
+
+    public void setEquipName(String equipName) {
+        this.equipName = equipName;
+    }
+
+    public String getRecipeName() {
+        return recipeName;
+    }
+
+    public void setRecipeName(String recipeName) {
+        this.recipeName = recipeName;
+    }
+
+    public String getStepName() {
+        return stepName;
+    }
+
+    public void setStepName(String stepName) {
+        this.stepName = stepName;
     }
 
     public String getEquipID() {
@@ -69,27 +103,24 @@ public class FabEvent {
         this.dateTime = dateTime;
     }
 
-    public Long getEquipIDAsLong() {
-        return this.equipID;
-    }
-
-    public Long getRecipeIDAsLong() {
-        return this.recipeID;
-    }
-
-    public Long getStepIDAsLong() {
-        return this.stepID;
-    }
-
     @Override
     public String toString() {
-        return "FabEvent{" +
+        return "FabTranslatedEvent{" +
                 "equipID=" + equipID +
+                ", equipName='" + equipName + '\'' +
                 ", recipeID=" + recipeID +
+                ", recipeName='" + recipeName + '\'' +
                 ", stepID=" + stepID +
+                ", stepName='" + stepName + '\'' +
                 ", holdType='" + holdType + '\'' +
                 ", holdFlag=" + holdFlag +
                 ", dateTime=" + dateTime +
                 '}';
+    }
+
+    public boolean isTranslated() {
+        if (equipName != null && recipeName != null && stepName != null)
+            return true;
+        else return false;
     }
 }
