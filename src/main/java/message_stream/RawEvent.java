@@ -18,8 +18,8 @@ public class RawEvent {
     public RawEvent() {
     }
 
-    public Long getOid() {
-        return oid;
+    public String getOid() {
+        return Long.toHexString(oid).toUpperCase();
     }
 
     public void setOid(String oid) {

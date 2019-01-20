@@ -40,7 +40,7 @@ public class RawDataStreamer {
         // Configure the stream.
         Properties streamsConfiguration = new Properties();
 
-        streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "test");
+        streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "test1");
         streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
 
         // Configure the serialization and deserialization.
@@ -74,6 +74,7 @@ public class RawDataStreamer {
         TopicNameExtractor<String, RawConnectEvent> topicNameExtractor = new TopicNameExtractor<String, RawConnectEvent>() {
             @Override
             public String extract(String s, RawConnectEvent rawEvent, RecordContext recordContext) {
+                System.out.println("RawDataStreamer");
                 outputTopics.add(MAPPINGS[rawEvent.getType()]);
                 return MAPPINGS[rawEvent.getType()];
             }

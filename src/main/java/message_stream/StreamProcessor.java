@@ -17,9 +17,11 @@ import org.apache.kafka.streams.state.internals.InMemoryKeyValueStore;
 import raw_data_connector.RawConnectEvent;
 import raw_data_connector.RawDataStreamer;
 import utils.CustomExceptionHandler;
+import utils.FabEventSerde;
 import utils.JsonPOJODeserializer;
 import utils.JsonPOJOSerializer;
 
+import java.security.KeyPair;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -42,9 +44,9 @@ public class StreamProcessor {
         // Configure the stream.
         Properties streamsConfiguration = new Properties();
 
-        streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "test1");
+        streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "test3");
         streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
-        streamsConfiguration.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 10 * 1024 * 1024L);
+//        streamsConfiguration.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 10 * 1024 * 1024L);
 //        streamsConfiguration.put(StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, CustomExceptionHandler.class);
 
         StreamsBuilder builder = new StreamsBuilder();
@@ -65,7 +67,8 @@ public class StreamProcessor {
         // Create the SerDe (SerializationDeserialization) object that Kafka Stream need.
         final Serde<FabEvent> fabRowSerde = Serdes.serdeFrom(fabRowSerializer, fabRowDeserializer);
 
-//        streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+        streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+        streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, FabEventSerde.class);
 //        streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, fabRowSerde.getClass().getName());
 
 
@@ -74,11 +77,11 @@ public class StreamProcessor {
         Pattern inputTopicPattern = Pattern.compile("category[0-9]+");
 
         // Create a stream over the input_topic
-        KStream<String, FabEvent> fabDataEntries = builder.stream(inputTopicPattern, Consumed.with(Serdes.String(), fabRowSerde));
+        final KStream<String, FabEvent> fabDataEntries = builder.stream(inputTopicPattern, Consumed.with(Serdes.String(), fabRowSerde));
 
         // Insert all the input stream into the output specific topic by using a topic name extractor.
         // If the topic is missing it will be automatically created.
-        fabDataEntries.to("topic_test14", Produced.with(Serdes.String(), fabRowSerde));
+//        fabDataEntries.to("topic_test14", Produced.with(Serdes.String(), fabRowSerde));
 
 
         // raw_data part.
@@ -132,40 +135,85 @@ public class StreamProcessor {
 //            }
 //        };
 
-//        ValueTransformerSupplier<FabEvent, FabEvent> valueTransformerSupplier = new ValueTransformerSupplier<FabEvent, FabEvent>() {
-//            @Override
-//            public ValueTransformer<FabEvent, FabEvent> get() {
-//                return new ValueTransformer<FabEvent, FabEvent>() {
-//                    private KeyValueStore<String, RawEvent> eqipState;
-//                    private KeyValueStore<String, RawEvent> recipeState;
-//                    private KeyValueStore<String, RawEvent> stepState;
-//
-//
-//                    @Override
-//                    public void init(ProcessorContext processorContext) {
-//                        this.eqipState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.EQUIP_TRANSLATION_STATE);
-//                        this.recipeState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.RECIPE_TRANSLATION_STATE);
-//                        this.stepState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.STEP_TRANSLATION_STATE);
-//
-////                        logger.debug("aa" + eqipState);
-//                    }
-//
-//                    @Override
-//                    public FabEvent transform(FabEvent fabEvent) {
-////                        logger.debug(fabEvent.toString());
-//                        return null;
-//                    }
-//
-//                    @Override
-//                    public void close() {
-//
-//                    }
-//                };
-//            }
-//        };
+        ValueTransformerSupplier<FabEvent, FabEvent> valueTransformerSupplier = new ValueTransformerSupplier<FabEvent, FabEvent>() {
+            @Override
+            public ValueTransformer<FabEvent, FabEvent> get() {
+                return new ValueTransformer<FabEvent, FabEvent>() {
+                    private KeyValueStore<String, RawEvent> eqipState;
+                    private KeyValueStore<String, RawEvent> recipeState;
+                    private KeyValueStore<String, RawEvent> stepState;
 
-//        fabDataEntries.transformValues(valueTransformerSupplier, EQUIP_TRANSLATION_STATE, RECIPE_TRANSLATION_STATE, STEP_TRANSLATION_STATE).to("topic_test_test");
-//        fabDataEntries.to("topic_test2");
+
+                    @Override
+                    public void init(ProcessorContext processorContext) {
+                        this.eqipState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.EQUIP_TRANSLATION_STATE);
+                        KeyValueIterator<String, RawEvent> iter = this.eqipState.all();
+
+                        while (iter.hasNext()) {
+                            KeyValue<String, RawEvent> entry = iter.next();
+//                            context.forward(entry.key, entry.value.toString());
+                        }
+                        this.recipeState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.RECIPE_TRANSLATION_STATE);
+                        this.stepState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.STEP_TRANSLATION_STATE);
+
+//                        logger.debug("aa" + eqipState);
+                    }
+
+                    @Override
+                    public FabEvent transform(FabEvent fabEvent) {
+                        System.out.println(fabEvent.toString());
+                        return fabEvent;
+                    }
+
+                    @Override
+                    public void close() {
+
+                    }
+                };
+            }
+        };
+
+        TransformerSupplier<String, FabEvent, KeyValue<String, FabEvent>> transformerSupplier = new TransformerSupplier<String, FabEvent, KeyValue<String, FabEvent>>() {
+            @Override
+            public Transformer<String, FabEvent, KeyValue<String, FabEvent>> get() {
+                return new Transformer<String, FabEvent, KeyValue<String, FabEvent>>() {
+
+                    private KeyValueStore<String, RawEvent> eqipState;
+                    private KeyValueStore<String, RawEvent> recipeState;
+                    private KeyValueStore<String, RawEvent> stepState;
+
+                    @Override
+                    public void init(ProcessorContext processorContext) {
+                        this.eqipState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.EQUIP_TRANSLATION_STATE);
+//                        KeyValueIterator<String, RawEvent> iter = this.eqipState.all();
+
+//                        while (iter.hasNext()) {
+//                            KeyValue<String, RawEvent> entry = iter.next();
+////                            context.forward(entry.key, entry.value.toString());
+//                        }
+                        this.recipeState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.RECIPE_TRANSLATION_STATE);
+                        this.stepState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.STEP_TRANSLATION_STATE);
+                    }
+
+                    @Override
+                    public KeyValue<String, FabEvent> transform(String s, FabEvent fabEvent) {
+                        System.out.println(fabEvent.toString());
+                        return KeyValue.pair(s, fabEvent);
+                    }
+
+                    @Override
+                    public void close() {
+
+                    }
+                };
+            }
+        };
+
+        fabDataEntries
+//                .transformValues(valueTransformerSupplier, EQUIP_TRANSLATION_STATE, RECIPE_TRANSLATION_STATE, STEP_TRANSLATION_STATE)
+                .transform(transformerSupplier, EQUIP_TRANSLATION_STATE, RECIPE_TRANSLATION_STATE, STEP_TRANSLATION_STATE)
+                .to("topic_test_test");
+
         this.streamProcessor = new KafkaStreams(builder.build(), streamsConfiguration);
     }
 
