@@ -1,6 +1,5 @@
 import fab_data_connector.FabDataStreamer;
 import message_stream.StreamProcessor;
-import message_stream.Testy;
 import raw_data_connector.RawDataStreamer;
 
 public class Main {
