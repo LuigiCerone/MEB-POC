@@ -12,6 +12,7 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.Produced;
 import org.apache.kafka.streams.processor.RecordContext;
 import org.apache.kafka.streams.processor.TopicNameExtractor;
+import utils.CustomExceptionHandler;
 import utils.JsonPOJODeserializer;
 import utils.JsonPOJOSerializer;
 
@@ -38,6 +39,8 @@ public class FabDataStreamer {
 
         streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "test");
         streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
+        streamsConfiguration.put(StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, CustomExceptionHandler.class);
+
 
         // Configure the serialization and deserialization.
         Map<String, Object> serdeProps = new HashMap<>();
@@ -52,6 +55,8 @@ public class FabDataStreamer {
 
         // Create the SerDe (SerializationDeserialization) object that Kafka Stream need.
         final Serde<FabConnectEvent> fabEventSerde = Serdes.serdeFrom(fabEventSerializer, fabEventDeserializer);
+//        streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+//        streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, fabEventSerde.getClass().getName());
 
         StreamsBuilder builder = new StreamsBuilder();
 
@@ -71,6 +76,10 @@ public class FabDataStreamer {
         // Insert all the input stream into the output specific topic by using a topic name extractor.
         // If the topic is missing it will be automatically created.
         fabDataEntries.to(topicNameExtractor, Produced.with(Serdes.String(), fabEventSerde));
+
+        // Another stream into a general topic for debug purpose only.
+//        KStream<String, FabConnectEvent> fabDataEntriesDebug = builder.stream(inputTopic, Consumed.with(Serdes.String(), fabEventSerde));
+//        fabDataEntriesDebug.to("debug_categories", Produced.with(Serdes.String(), fabEventSerde));
 
         this.kafkaStreams = new KafkaStreams(builder.build(), streamsConfiguration);
     }

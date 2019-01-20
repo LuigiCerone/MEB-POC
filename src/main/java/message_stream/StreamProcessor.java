@@ -10,11 +10,13 @@ import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.*;
+import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.processor.StateStore;
 import org.apache.kafka.streams.state.*;
 import org.apache.kafka.streams.state.internals.InMemoryKeyValueStore;
 import raw_data_connector.RawConnectEvent;
 import raw_data_connector.RawDataStreamer;
+import utils.CustomExceptionHandler;
 import utils.JsonPOJODeserializer;
 import utils.JsonPOJOSerializer;
 
@@ -40,9 +42,10 @@ public class StreamProcessor {
         // Configure the stream.
         Properties streamsConfiguration = new Properties();
 
-        streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "ls");
+        streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "test1");
         streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
         streamsConfiguration.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 10 * 1024 * 1024L);
+//        streamsConfiguration.put(StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, CustomExceptionHandler.class);
 
         StreamsBuilder builder = new StreamsBuilder();
 
@@ -62,6 +65,10 @@ public class StreamProcessor {
         // Create the SerDe (SerializationDeserialization) object that Kafka Stream need.
         final Serde<FabEvent> fabRowSerde = Serdes.serdeFrom(fabRowSerializer, fabRowDeserializer);
 
+//        streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+//        streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, fabRowSerde.getClass().getName());
+
+
         // We don't know how many categories the simulator will create, so we subscribe to topics based on pattern's
         // matching. Every topics like category1, category40 is valid.
         Pattern inputTopicPattern = Pattern.compile("category[0-9]+");
@@ -71,7 +78,7 @@ public class StreamProcessor {
 
         // Insert all the input stream into the output specific topic by using a topic name extractor.
         // If the topic is missing it will be automatically created.
-        fabDataEntries.to("topic_test", Produced.with(Serdes.String(), fabRowSerde));
+        fabDataEntries.to("topic_test14", Produced.with(Serdes.String(), fabRowSerde));
 
 
         // raw_data part.
@@ -95,7 +102,7 @@ public class StreamProcessor {
 
         KTable<String, RawEvent> equipTable = builder.table(
                 translation_topics[0],
-                Materialized.<String, RawEvent>as(equipStoreSupplier));
+                Materialized.<String, RawEvent>as(equipStoreSupplier).withKeySerde(Serdes.String()).withValueSerde(rawEventSerde));
 
 //        builder.addStateStore(Stores.keyValueStoreBuilder(equipStoreSupplier, Serdes.String(), rawEventSerde));
 
@@ -104,7 +111,7 @@ public class StreamProcessor {
 
         KTable<String, RawEvent> recipeTable = builder.table(
                 translation_topics[1],
-                Materialized.<String, RawEvent>as(recipeStoreSupplier));
+                Materialized.<String, RawEvent>as(recipeStoreSupplier).withKeySerde(Serdes.String()).withValueSerde(rawEventSerde));
 
 //        builder.addStateStore(Stores.keyValueStoreBuilder(recipeStoreSupplier, Serdes.String(), rawEventSerde));
 
@@ -113,20 +120,52 @@ public class StreamProcessor {
 
         KTable<String, RawEvent> stepTable = builder.table(
                 translation_topics[2],
-                Materialized.<String, RawEvent>as(stepStoreSupplier));
+                Materialized.<String, RawEvent>as(stepStoreSupplier).withKeySerde(Serdes.String()).withValueSerde(rawEventSerde));
 
 //        builder.addStateStore(Stores.keyValueStoreBuilder(stepStoreSupplier, Serdes.String(), rawEventSerde));
 
 
-        ValueTransformerSupplier valueTransformerSupplier = new ValueTransformerSupplier() {
-            @Override
-            public ValueTransformer get() {
-                return new FabDataTransformer();
-            }
-        };
+//        ValueTransformerSupplier valueTransformerSupplier = new ValueTransformerSupplier() {
+//            @Override
+//            public ValueTransformer get() {
+//                return new FabDataTransformer();
+//            }
+//        };
 
-        fabDataEntries.transformValues(valueTransformerSupplier, EQUIP_TRANSLATION_STATE, RECIPE_TRANSLATION_STATE, STEP_TRANSLATION_STATE);
-//        .to();
+//        ValueTransformerSupplier<FabEvent, FabEvent> valueTransformerSupplier = new ValueTransformerSupplier<FabEvent, FabEvent>() {
+//            @Override
+//            public ValueTransformer<FabEvent, FabEvent> get() {
+//                return new ValueTransformer<FabEvent, FabEvent>() {
+//                    private KeyValueStore<String, RawEvent> eqipState;
+//                    private KeyValueStore<String, RawEvent> recipeState;
+//                    private KeyValueStore<String, RawEvent> stepState;
+//
+//
+//                    @Override
+//                    public void init(ProcessorContext processorContext) {
+//                        this.eqipState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.EQUIP_TRANSLATION_STATE);
+//                        this.recipeState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.RECIPE_TRANSLATION_STATE);
+//                        this.stepState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.STEP_TRANSLATION_STATE);
+//
+////                        logger.debug("aa" + eqipState);
+//                    }
+//
+//                    @Override
+//                    public FabEvent transform(FabEvent fabEvent) {
+////                        logger.debug(fabEvent.toString());
+//                        return null;
+//                    }
+//
+//                    @Override
+//                    public void close() {
+//
+//                    }
+//                };
+//            }
+//        };
+
+//        fabDataEntries.transformValues(valueTransformerSupplier, EQUIP_TRANSLATION_STATE, RECIPE_TRANSLATION_STATE, STEP_TRANSLATION_STATE).to("topic_test_test");
+//        fabDataEntries.to("topic_test2");
         this.streamProcessor = new KafkaStreams(builder.build(), streamsConfiguration);
     }
 

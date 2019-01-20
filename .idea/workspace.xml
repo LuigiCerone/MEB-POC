@@ -2,15 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b20c40b9-f593-4574-a5a4-4e979bd510e4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fab_data_connector/FabConnectEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fab_data_connector/FabConnectEvent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fab_data_connector/FabDataStreamer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fab_data_connector/FabDataStreamer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/message_stream/FabEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/message_stream/FabEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/message_stream/FabDataTransformer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/message_stream/FabDataTransformer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/message_stream/StreamProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/message_stream/StreamProcessor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raw_data_connector/RawConnectEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raw_data_connector/RawConnectEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raw_data_connector/RawDataStreamer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raw_data_connector/RawDataStreamer.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -72,80 +67,40 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="225">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/message_stream/StreamProcessor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="311">
-              <caret line="100" selection-start-line="100" selection-end-line="100" />
+            <state relative-caret-position="173">
+              <caret line="168" column="20" selection-start-line="168" selection-start-column="20" selection-end-line="168" selection-end-column="20" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#4581#4599#0" expanded="true" />
                 <element signature="e#5047#5065#0" expanded="true" />
                 <element signature="e#5492#5510#0" expanded="true" />
-                <element signature="e#6214#6385#0" expanded="true" />
-                <element signature="e#6384#6385#0" expanded="true" />
+                <element signature="e#8015#8016#0" expanded="true" />
+                <element signature="e#8059#8060#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/raw_data_connector/RawConnectEvent.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/message_stream/Testy.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-              <folding>
-                <element signature="e#1026#1027#0" expanded="true" />
-                <element signature="e#1084#1085#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="41">
+              <caret line="39" column="76" selection-start-line="39" selection-start-column="76" selection-end-line="39" selection-end-column="76" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/message_stream/FabDataTransformer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="29" column="10" lean-forward="true" selection-start-line="29" selection-start-column="10" selection-end-line="29" selection-end-column="10" />
+            <state relative-caret-position="300">
+              <caret line="20" column="24" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="24" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-streams/2.1.0/kafka-streams-2.1.0.jar!/org/apache/kafka/streams/kstream/ValueTransformer.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="12" column="7" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pom.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="461">
-              <caret line="53" selection-start-line="53" selection-end-line="53" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/installations.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="64" selection-start-line="6" selection-start-column="64" selection-end-line="6" selection-end-column="64" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-streams/2.1.0/kafka-streams-2.1.0.jar!/org/apache/kafka/streams/StreamsBuilder.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="91" column="44" selection-start-line="91" selection-start-column="44" selection-end-line="91" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -153,8 +108,60 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="16" column="5" selection-start-line="16" selection-start-column="5" selection-end-line="16" selection-end-column="5" />
+            <state relative-caret-position="191">
+              <caret line="19" column="15" selection-start-line="19" selection-start-column="15" selection-end-line="19" selection-end-column="15" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/utils/CustomExceptionHandler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" selection-start-line="3" selection-end-line="3" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-streams/2.1.0/kafka-streams-2.1.0.jar!/org/apache/kafka/streams/processor/internals/StreamTask.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="195">
+              <caret line="194" selection-start-line="194" selection-end-line="194" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/fab_data_connector/FabDataStreamer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="328">
+              <caret line="58" column="48" selection-start-line="58" selection-start-column="48" selection-end-line="58" selection-end-column="48" />
+              <folding>
+                <element signature="e#3484#3485#0" expanded="true" />
+                <element signature="e#3525#3526#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="das://d32a055e-fa26-462f-94b3-0d08f14fffa3/schema/fab_data/table/event">
+          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+            <state>
+              <filtering enabled="true" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/fab_data_connector/FabConnectEvent.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="386">
+              <caret line="88" selection-start-line="88" selection-end-line="88" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -201,17 +208,19 @@
         <option value="$PROJECT_DIR$/installations.txt" />
         <option value="$PROJECT_DIR$/src/main/java/raw_data_connector/RawEvent.java" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/.datagrid/cell" />
-        <option value="$PROJECT_DIR$/src/main/java/fab_data_connector/FabDataStreamer.java" />
         <option value="$PROJECT_DIR$/src/main/java/fab_data_connector/FabEvent.java" />
         <option value="$PROJECT_DIR$/src/main/java/message_stream/FabRow.java" />
         <option value="$PROJECT_DIR$/src/main/java/message_stream/RawEvent.java" />
         <option value="$PROJECT_DIR$/src/main/java/fab_data_connector/FabConnectEvent.java" />
         <option value="$PROJECT_DIR$/src/main/java/raw_data_connector/RawDataStreamer.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Main.java" />
-        <option value="$PROJECT_DIR$/src/main/java/message_stream/StreamProcessor.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/raw_data_connector/RawConnectEvent.java" />
         <option value="$PROJECT_DIR$/src/main/java/message_stream/FabDataTransformer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/utils/CustomExceptionHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/fab_data_connector/FabDataStreamer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/message_stream/Testy.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Main.java" />
+        <option value="$PROJECT_DIR$/src/main/java/message_stream/StreamProcessor.java" />
       </list>
     </option>
   </component>
@@ -225,7 +234,7 @@
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="35" />
     <option name="y" value="23" />
-    <option name="width" value="1321" />
+    <option name="width" value="1331" />
     <option name="height" value="745" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -317,9 +326,10 @@
   </component>
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="mysql" />
+    <property name="ToolWindowRun.ShowToolbar" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547979312882" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547985287770" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/Edit As Language" value="GenericSQL" />
     <property name="database.console.LAST_STATE" value="false" />
     <property name="last.edited.regexp" value="category" />
@@ -397,12 +407,12 @@
       <workItem from="1547885650960" duration="1191000" />
       <workItem from="1547904256306" duration="12130000" />
       <workItem from="1547919457366" duration="3303000" />
-      <workItem from="1547975234518" duration="4076000" />
+      <workItem from="1547975234518" duration="9584000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="60952000" />
+    <option name="totallyTimeSpent" value="66460000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -426,8 +436,8 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32866043" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.34423676" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.39719626" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3271028" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39719626" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32866043" />
@@ -491,33 +501,64 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/message_stream/FabDataTransformer.java</url>
-          <line>22</line>
-          <properties />
-          <option name="timeStamp" value="18" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/message_stream/FabDataTransformer.java</url>
-          <line>28</line>
-          <properties />
-          <option name="timeStamp" value="21" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/message_stream/FabDataTransformer.java</url>
-          <line>27</line>
-          <properties />
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/message_stream/FabDataTransformer.java</url>
-          <line>20</line>
+          <line>21</line>
           <properties />
           <option name="timeStamp" value="23" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-clients/2.1.0/kafka-clients-2.1.0.jar!/org/apache/kafka/clients/consumer/internals/SubscriptionState.class</url>
+          <line>128</line>
+          <properties />
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-streams/2.1.0/kafka-streams-2.1.0.jar!/org/apache/kafka/streams/processor/internals/StreamTask.class</url>
+          <line>194</line>
+          <properties />
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-streams/2.1.0/kafka-streams-2.1.0.jar!/org/apache/kafka/streams/processor/internals/StreamThread.class</url>
+          <line>217</line>
+          <properties />
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-streams/2.1.0/kafka-streams-2.1.0.jar!/org/apache/kafka/streams/processor/internals/StreamThread.class</url>
+          <line>216</line>
+          <properties />
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="((StreamThread)this).state" custom="org.apache.kafka.streams.processor.internals.StreamThread" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>throw new StreamsException(String.format(&quot;Exception caught in process. taskId=%s, processor=%s, topic=%s, partition=%d, offset=%d&quot;, this.id(), this.processorContext.currentNode().name(), record.topic(), record.partition(), record.offset()), var9);</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>var9</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>record.key()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>record.value()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>recipeTable.toStream()</expression-string>
         <language-id>JAVA</language-id>
@@ -526,11 +567,6 @@
       </expression>
       <expression>
         <expression-string>record.value() instanceof RawEvent</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>record.value()</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -549,41 +585,9 @@
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>Integer.parseInt(after.get(&quot;datetime&quot;))</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>Integer.parseInt(after.get(&quot;datetime&quot;)</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>Integer.parseInt((String) after.get(&quot;datetime&quot;))</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-clients/0.9.0.0/kafka-clients-0.9.0.0.jar!/org/apache/kafka/clients/consumer/Consumer.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="335">
-          <caret line="34" column="42" selection-start-line="34" selection-start-column="42" selection-end-line="34" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/d32a055e-fa26-462f-94b3-0d08f14fffa3/console.sql">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="5" selection-start-line="7" selection-start-column="5" selection-end-line="7" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/LICENSE">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -681,35 +685,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/fab_data_connector/FabDataStreamer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-10">
-          <caret line="54" lean-forward="true" selection-start-line="54" selection-end-line="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://d32a055e-fa26-462f-94b3-0d08f14fffa3/schema/fab_data/table/event">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/message_stream/FabEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="35" column="29" selection-start-line="35" selection-end-line="36" />
-          <folding>
-            <element signature="e#580#581#0" expanded="true" />
-            <element signature="e#648#649#0" expanded="true" />
-            <element signature="e#764#765#0" expanded="true" />
-            <element signature="e#819#820#0" expanded="true" />
-            <element signature="e#942#943#0" expanded="true" />
-            <element signature="e#993#994#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-streams/2.1.0/kafka-streams-2.1.0.jar!/org/apache/kafka/streams/state/KeyValueBytesStoreSupplier.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -724,55 +699,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/message_stream/RawEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="11" column="21" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
-          <folding>
-            <element signature="e#511#512#0" expanded="true" />
-            <element signature="e#577#578#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-streams/2.1.0/kafka-streams-2.1.0.jar!/org/apache/kafka/streams/kstream/ValueTransformerWithKeySupplier.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/raw_data_connector/RawDataStreamer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="705">
-          <caret line="64" column="83" selection-start-line="64" selection-start-column="83" selection-end-line="64" selection-end-column="83" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://f6fb07c0-2333-49dd-a8e8-c5546890e655/schema/raw_data/table/analytics">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-streams/2.1.0/kafka-streams-2.1.0.jar!/org/apache/kafka/streams/kstream/Transformer.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/fab_data_connector/FabConnectEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="990">
-          <caret line="96" column="61" selection-start-line="96" selection-start-column="61" selection-end-line="96" selection-end-column="61" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -815,42 +745,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-streams/2.1.0/kafka-streams-2.1.0.jar!/org/apache/kafka/streams/kstream/KStream.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="58" column="71" selection-start-line="58" selection-start-column="40" selection-end-line="58" selection-end-column="71" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="5" selection-start-line="16" selection-start-column="5" selection-end-line="16" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/installations.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="6" column="64" selection-start-line="6" selection-start-column="64" selection-end-line="6" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/message_stream/StreamProcessor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="100" selection-start-line="100" selection-end-line="100" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#4581#4599#0" expanded="true" />
-            <element signature="e#5047#5065#0" expanded="true" />
-            <element signature="e#5492#5510#0" expanded="true" />
-            <element signature="e#6214#6385#0" expanded="true" />
-            <element signature="e#6384#6385#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -868,23 +766,200 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/raw_data_connector/RawConnectEvent.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-streams/2.1.0/kafka-streams-2.1.0.jar!/org/apache/kafka/streams/kstream/ValueTransformerSupplier.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-streams/2.1.0/kafka-streams-2.1.0.jar!/org/apache/kafka/streams/kstream/ValueTransformerWithKeySupplier.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-streams/2.1.0/kafka-streams-2.1.0.jar!/org/apache/kafka/streams/kstream/KStream.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="56" column="64" selection-start-line="56" selection-start-column="40" selection-end-line="56" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/message_stream/FabEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-259">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/message_stream/RawEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="14" column="22" lean-forward="true" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
           <folding>
-            <element signature="e#1026#1027#0" expanded="true" />
-            <element signature="e#1084#1085#0" expanded="true" />
+            <element signature="e#511#512#0" expanded="true" />
+            <element signature="e#577#578#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/raw_data_connector/RawConnectEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="28" column="24" selection-start-line="28" selection-start-column="24" selection-end-line="28" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/raw_data_connector/RawDataStreamer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="28" column="35" lean-forward="true" selection-start-line="28" selection-start-column="35" selection-end-line="28" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-clients/2.1.0/kafka-clients-2.1.0.jar!/org/apache/kafka/clients/consumer/ConsumerRecord.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="121">
+          <caret line="74" selection-start-line="74" selection-end-line="74" />
+          <folding>
+            <element signature="e#3035#3036#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-streams/2.1.0/kafka-streams-2.1.0.jar!/org/apache/kafka/streams/processor/internals/StampedRecord.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="24" selection-start-line="24" selection-end-line="24" />
+          <folding>
+            <element signature="e#728#729#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://f6fb07c0-2333-49dd-a8e8-c5546890e655/schema/raw_data/table/analytics">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/fab_data_connector/FabConnectEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="386">
+          <caret line="88" selection-start-line="88" selection-end-line="88" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-clients/2.1.0/kafka-clients-2.1.0.jar!/org/apache/kafka/common/serialization/Deserializer.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="12" column="9" selection-start-line="12" selection-start-column="9" selection-end-line="12" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://d32a055e-fa26-462f-94b3-0d08f14fffa3/schema/fab_data/table/event">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-streams/2.1.0/kafka-streams-2.1.0.jar!/org/apache/kafka/streams/processor/internals/AssignedStreamsTasks.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="97" selection-start-line="97" selection-end-line="97" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-clients/2.1.0/kafka-clients-2.1.0.jar!/org/apache/kafka/clients/consumer/internals/SubscriptionState.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="128" selection-start-line="128" selection-end-line="128" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-streams/2.1.0/kafka-streams-2.1.0.jar!/org/apache/kafka/streams/processor/internals/StreamTask.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="194" selection-start-line="194" selection-end-line="194" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-streams/2.1.0/kafka-streams-2.1.0.jar!/org/apache/kafka/streams/processor/internals/StreamThread.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="103">
+          <caret line="217" selection-start-line="217" selection-end-line="217" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/utils/CustomExceptionHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/message_stream/FabDataTransformer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="29" column="10" lean-forward="true" selection-start-line="29" selection-start-column="10" selection-end-line="29" selection-end-column="10" />
+        <state relative-caret-position="300">
+          <caret line="20" column="24" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/fab_data_connector/FabDataStreamer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="328">
+          <caret line="58" column="48" selection-start-line="58" selection-start-column="48" selection-end-line="58" selection-end-column="48" />
+          <folding>
+            <element signature="e#3484#3485#0" expanded="true" />
+            <element signature="e#3525#3526#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/message_stream/Testy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="41">
+          <caret line="39" column="76" selection-start-line="39" selection-start-column="76" selection-end-line="39" selection-end-column="76" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="19" column="15" selection-start-line="19" selection-start-column="15" selection-end-line="19" selection-end-column="15" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/message_stream/StreamProcessor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="168" column="20" selection-start-line="168" selection-start-column="20" selection-end-line="168" selection-end-column="20" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#4581#4599#0" expanded="true" />
+            <element signature="e#5047#5065#0" expanded="true" />
+            <element signature="e#5492#5510#0" expanded="true" />
+            <element signature="e#8015#8016#0" expanded="true" />
+            <element signature="e#8059#8060#0" expanded="true" />
           </folding>
         </state>
       </provider>

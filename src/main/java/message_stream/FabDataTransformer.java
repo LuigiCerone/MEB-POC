@@ -1,12 +1,13 @@
 package message_stream;
 
 import org.apache.kafka.streams.kstream.ValueTransformer;
+import org.apache.kafka.streams.kstream.ValueTransformerSupplier;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.state.KeyValueStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class FabDataTransformer implements ValueTransformer<String, FabEvent> {
+public class FabDataTransformer implements ValueTransformer<FabEvent, FabEvent> {
     final static Logger logger = LoggerFactory.getLogger(FabDataTransformer.class);
 
     private KeyValueStore<String, RawEvent> eqipState;
@@ -20,13 +21,12 @@ public class FabDataTransformer implements ValueTransformer<String, FabEvent> {
         this.recipeState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.RECIPE_TRANSLATION_STATE);
         this.stepState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.STEP_TRANSLATION_STATE);
 
-//        logger.debug("aa" + eqipState);
+        logger.debug("aa" + eqipState);
     }
 
     @Override
-    public FabEvent transform(String s) {
-        // can access this.state and use read-only key
-//        logger.debug("String: " + s);
+    public FabEvent transform(FabEvent fabEvent) {
+        logger.debug(fabEvent.toString());
         return null;
     }
 
