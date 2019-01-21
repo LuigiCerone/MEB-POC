@@ -43,9 +43,7 @@ public class FabDataTransformer implements Transformer<String, FabEvent, KeyValu
     @Override
     public KeyValue<String, FabTranslatedEvent> transform(String key, FabEvent fabEvent) {
         // Here we need to translate the event
-//        System.out.println(fabEvent.toString());
         FabTranslatedEvent fabTranslatedEvent = new FabTranslatedEvent(fabEvent);
-        System.out.println(fabTranslatedEvent);
 
         tryToTranslate(0, fabTranslatedEvent);
         tryToTranslate(1, fabTranslatedEvent);
@@ -113,8 +111,26 @@ public class FabDataTransformer implements Transformer<String, FabEvent, KeyValu
             KeyValueIterator<String, FabTranslatedEvent> iter = failedTranslationsState.all();
             while (iter.hasNext()) {
                 KeyValue<String, FabTranslatedEvent> entry = iter.next();
+                FabTranslatedEvent fabTranslatedEvent = entry.value;
                 System.out.println("FabTransformerPunctuator: " + entry.value.toString());
-                context.forward(entry.key, entry.value);
+
+                if (fabTranslatedEvent.getEquipName() == null)
+                    tryToTranslate(0, fabTranslatedEvent);
+
+                if (fabTranslatedEvent.getRecipeName() == null)
+                    tryToTranslate(1, fabTranslatedEvent);
+
+                if (fabTranslatedEvent.getStepName() == null)
+                    tryToTranslate(2, fabTranslatedEvent);
+
+                if (fabTranslatedEvent.isTranslated()) {
+                    // Remove it from the state and forward to the output topic.
+                    failedTranslationsState.delete(entry.key);
+                    context.forward(entry.key, entry.value);
+                } else {
+                    // Update in the state.
+                    failedTranslationsState.put(entry.key, fabTranslatedEvent);
+                }
             }
             iter.close();
 

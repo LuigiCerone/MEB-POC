@@ -53,6 +53,13 @@ public class FabTranslatedEvent {
         return stepName;
     }
 
+//    public void setStepName(String stepName) {
+//        if (stepName.equals("null"))
+//            this.stepName = null;
+//        else
+//            this.stepName = stepName;
+//    }
+
     public void setStepName(String stepName) {
         this.stepName = stepName;
     }

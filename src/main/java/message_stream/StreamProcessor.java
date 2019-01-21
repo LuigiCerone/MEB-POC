@@ -218,8 +218,8 @@ public class StreamProcessor {
         fabDataEntries
 //                .transformValues(valueTransformerSupplier, EQUIP_TRANSLATION_STATE, RECIPE_TRANSLATION_STATE, STEP_TRANSLATION_STATE)
                 .transform(transformerSupplier, EQUIP_TRANSLATION_STATE, RECIPE_TRANSLATION_STATE, STEP_TRANSLATION_STATE, FAILED_TRANSLATION)
-//                .through("translated_categories")
-                .to(topicNameExtractor);
+                .through("translated_categories", Produced.with(Serdes.String(), fabTranslatedEventSerde))
+                .to(topicNameExtractor, Produced.with(Serdes.String(), fabTranslatedEventSerde));
         this.streamProcessor = new KafkaStreams(builder.build(), streamsConfiguration);
     }
 
