@@ -10,7 +10,7 @@ import javax.ws.rs.core.Application;
 import java.util.Set;
 
 
-@ApplicationPath("sa18")
+@ApplicationPath("/")
 public class Main extends Application {
     public static void main(String[] agrs) throws Exception {
         System.out.println("Started");
