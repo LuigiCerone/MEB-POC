@@ -3,10 +3,14 @@ package message_stream;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.Transformer;
 import org.apache.kafka.streams.processor.ProcessorContext;
+import org.apache.kafka.streams.processor.PunctuationType;
+import org.apache.kafka.streams.processor.Punctuator;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.KeyValueStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.Duration;
 
 public class FabDataTransformer implements Transformer<String, FabEvent, KeyValue<String, FabTranslatedEvent>> {
     final static Logger logger = LoggerFactory.getLogger(FabDataTransformer.class);
@@ -15,17 +19,29 @@ public class FabDataTransformer implements Transformer<String, FabEvent, KeyValu
     private KeyValueStore<String, RawEvent> recipeState;
     private KeyValueStore<String, RawEvent> stepState;
 
+    private KeyValueStore<String, FabTranslatedEvent> failedTranslationsState;
+
+    private ProcessorContext context;
+
+    @SuppressWarnings("unchecked")
     @Override
     public void init(ProcessorContext processorContext) {
+        this.context = processorContext;
+
         // Here we can access the StateStore of the kafka stream by using the name we gave to it in the StreamProcessor class.
         this.eqipState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.EQUIP_TRANSLATION_STATE);
         this.recipeState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.RECIPE_TRANSLATION_STATE);
         this.stepState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.STEP_TRANSLATION_STATE);
 
+        this.failedTranslationsState = (KeyValueStore<String, FabTranslatedEvent>) processorContext.getStateStore(StreamProcessor.FAILED_TRANSLATION);
+
+        // Schedule a punctuate method.
+        this.context.schedule(Duration.ofSeconds(30), PunctuationType.STREAM_TIME, new FabTransformerPunctuator());
+
     }
 
     @Override
-    public KeyValue<String, FabTranslatedEvent> transform(String s, FabEvent fabEvent) {
+    public KeyValue<String, FabTranslatedEvent> transform(String key, FabEvent fabEvent) {
         // Here we need to translate the event
 //        System.out.println(fabEvent.toString());
         FabTranslatedEvent fabTranslatedEvent = new FabTranslatedEvent(fabEvent);
@@ -36,8 +52,13 @@ public class FabDataTransformer implements Transformer<String, FabEvent, KeyValu
         tryToTranslate(2, fabTranslatedEvent);
 
         if (fabTranslatedEvent.isTranslated())
-            return KeyValue.pair(s, fabTranslatedEvent);
-        else return null;
+            return KeyValue.pair(key, fabTranslatedEvent);
+        else {
+            // Add this untranslated row in the state.
+            failedTranslationsState.put(key, fabTranslatedEvent);
+
+            return null;
+        }
 
 //        return KeyValue.pair(s, fabTranslatedEvent);
 
@@ -84,5 +105,21 @@ public class FabDataTransformer implements Transformer<String, FabEvent, KeyValu
     @Override
     public void close() {
         // Empty.
+    }
+
+    private class FabTransformerPunctuator implements Punctuator {
+        @Override
+        public void punctuate(long l) {
+            KeyValueIterator<String, FabTranslatedEvent> iter = failedTranslationsState.all();
+            while (iter.hasNext()) {
+                KeyValue<String, FabTranslatedEvent> entry = iter.next();
+                System.out.println("FabTransformerPunctuator: " + entry.value.toString());
+                context.forward(entry.key, entry.value);
+            }
+            iter.close();
+
+            // commit the current processing progress
+            context.commit();
+        }
     }
 }

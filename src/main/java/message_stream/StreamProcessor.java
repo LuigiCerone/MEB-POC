@@ -33,7 +33,12 @@ public class StreamProcessor {
     public static String EQUIP_TRANSLATION_STATE = "equip_analytics";
     public static String RECIPE_TRANSLATION_STATE = "recipe_analytics";
     public static String STEP_TRANSLATION_STATE = "step_analytics";
+
+    public static String FAILED_TRANSLATION = "failed_translations";
+
+
     public static String OUTPUT_TOPIC_PREFIX = "translated_";
+
 
     private int id;
     private KafkaStreams streamProcessor;
@@ -50,6 +55,9 @@ public class StreamProcessor {
 
         streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "test3");
         streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
+        streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+        streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, FabEventSerde.class);
+//        streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, fabRowSerde.getClass().getName());
 //        streamsConfiguration.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 10 * 1024 * 1024L);
 //        streamsConfiguration.put(StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, CustomExceptionHandler.class);
 
@@ -70,10 +78,6 @@ public class StreamProcessor {
 
         // Create the SerDe (SerializationDeserialization) object that Kafka Stream need.
         final Serde<FabEvent> fabRowSerde = Serdes.serdeFrom(fabRowSerializer, fabRowDeserializer);
-
-        streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
-        streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, FabEventSerde.class);
-//        streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, fabRowSerde.getClass().getName());
 
 
         // We don't know how many categories the simulator will create, so we subscribe to topics based on pattern's
@@ -129,6 +133,24 @@ public class StreamProcessor {
         KTable<String, RawEvent> stepTable = builder.table(
                 translation_topics[2],
                 Materialized.<String, RawEvent>as(stepStoreSupplier).withKeySerde(Serdes.String()).withValueSerde(rawEventSerde));
+
+
+        // fab translated event parts.
+        // =============================================================================================================
+        final Serializer<FabTranslatedEvent> fabTranslatedEventSerializer = new JsonPOJOSerializer<>();
+        serdeProps.put("JsonPOJOClass", FabTranslatedEvent.class);
+        fabTranslatedEventSerializer.configure(serdeProps, false);
+
+        final Deserializer<FabTranslatedEvent> fabTranslatedEventDeserializer = new JsonPOJODeserializer<>();
+        serdeProps.put("JsonPOJOClass", FabTranslatedEvent.class);
+        fabTranslatedEventDeserializer.configure(serdeProps, false);
+
+        // Create the SerDe (SerializationDeserialization) object that Kafka Stream need.
+        final Serde<FabTranslatedEvent> fabTranslatedEventSerde = Serdes.serdeFrom(fabTranslatedEventSerializer, fabTranslatedEventDeserializer);
+
+
+        KeyValueBytesStoreSupplier failedStoreSupplier = Stores.inMemoryKeyValueStore(FAILED_TRANSLATION);
+        builder.addStateStore(Stores.keyValueStoreBuilder(failedStoreSupplier, Serdes.String(), fabTranslatedEventSerde));
 
 //        builder.addStateStore(Stores.keyValueStoreBuilder(stepStoreSupplier, Serdes.String(), rawEventSerde));
 
@@ -195,8 +217,8 @@ public class StreamProcessor {
         // specific topic obtained with a topic extractor based on each row contents.
         fabDataEntries
 //                .transformValues(valueTransformerSupplier, EQUIP_TRANSLATION_STATE, RECIPE_TRANSLATION_STATE, STEP_TRANSLATION_STATE)
-                .transform(transformerSupplier, EQUIP_TRANSLATION_STATE, RECIPE_TRANSLATION_STATE, STEP_TRANSLATION_STATE)
-                .through("translated_categories")
+                .transform(transformerSupplier, EQUIP_TRANSLATION_STATE, RECIPE_TRANSLATION_STATE, STEP_TRANSLATION_STATE, FAILED_TRANSLATION)
+//                .through("translated_categories")
                 .to(topicNameExtractor);
         this.streamProcessor = new KafkaStreams(builder.build(), streamsConfiguration);
     }

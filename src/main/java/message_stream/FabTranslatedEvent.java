@@ -1,6 +1,9 @@
 package message_stream;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 // TODO Maybe we can box this class with FabEvent.
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FabTranslatedEvent {
 
     private Long equipID;
@@ -25,9 +28,9 @@ public class FabTranslatedEvent {
         this.holdFlag = fabEvent.isHoldFlag();
         this.dateTime = fabEvent.getDateTime();
 
-        this.equipName = "0";
-        this.recipeName = "0";
-        this.stepName = "0";
+        this.equipName = null;
+        this.recipeName = null;
+        this.stepName = null;
     }
 
     public String getEquipName() {
@@ -86,7 +89,6 @@ public class FabTranslatedEvent {
         this.holdType = holdType;
     }
 
-
     public boolean isHoldFlag() {
         return holdFlag;
     }
@@ -117,6 +119,7 @@ public class FabTranslatedEvent {
                 ", dateTime=" + dateTime +
                 '}';
     }
+
 
     public boolean isTranslated() {
         if (equipName != null && recipeName != null && stepName != null)
