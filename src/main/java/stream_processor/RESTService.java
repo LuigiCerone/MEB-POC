@@ -1,16 +1,17 @@
 package stream_processor;
 
-import com.sun.org.apache.regexp.internal.RE;
+import main.KafkaRunner;
+import message_stream.FabTranslatedEvent;
 import org.apache.kafka.streams.state.HostInfo;
 
-import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
-
+import java.util.List;
 
 @Path("rest")
 public class RESTService {
@@ -19,20 +20,23 @@ public class RESTService {
     private ArrayList<String> endpoints;
     private PersistentTopicStreamer persistentTopicStreamer;
 
-    public RESTService(PersistentTopicStreamer persistentTopicStreamer) {
-        this.persistentTopicStreamer = persistentTopicStreamer;
+    public RESTService() {
+//        this.persistentTopicStreamer = persistentTopicStreamer;
+//        this.persistentTopicStreamer = new PersistentTopicStreamer(123455);
+//        persistentTopicStreamer.start();
 
+        this.persistentTopicStreamer = KafkaRunner.getPersistentTopicStreamer();
         endpoints = new ArrayList<>();
         endpoints.add("/category/{number}");
-        endpoints.add("/categories/{number}");
     }
 
 
     @GET
     @Path("/category/{number}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getCategoryLive(@PathParam("number") final String genre) {
-        return persistentTopicStreamer.getTest();
+    public Response getCategoryLive(@PathParam("number") final int category) throws InterruptedException {
+        List<FabTranslatedEvent> result = this.persistentTopicStreamer.getTableAsListFromCategory(category);
+        return Response.ok(result).status(200).build();
     }
 
 

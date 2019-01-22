@@ -2,31 +2,43 @@ package stream_processor;
 
 import fab_data_connector.FabConnectEvent;
 import message_stream.FabTranslatedEvent;
+import message_stream.StreamProcessor;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.serialization.Serializer;
 import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
-import org.apache.kafka.streams.kstream.Consumed;
-import org.apache.kafka.streams.kstream.KStream;
-import org.apache.kafka.streams.kstream.Produced;
+import org.apache.kafka.streams.errors.InvalidStateStoreException;
+import org.apache.kafka.streams.kstream.*;
 import org.apache.kafka.streams.processor.RecordContext;
 import org.apache.kafka.streams.processor.TopicNameExtractor;
+import org.apache.kafka.streams.state.KeyValueBytesStoreSupplier;
+import org.apache.kafka.streams.state.KeyValueIterator;
+import org.apache.kafka.streams.state.QueryableStoreTypes;
+import org.apache.kafka.streams.state.Stores;
 import utils.CustomExceptionHandler;
 import utils.JsonPOJODeserializer;
 import utils.JsonPOJOSerializer;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
+@SuppressWarnings("unchecked")
 public class PersistentTopicStreamer {
 
+
     public final static String BOOTSTRAP_SERVERS = "localhost:9092";
+    public final static String PERSISTENT_TABLE_NAME_PREFIX = "ktable_";
 
     private int id;
     private Set<String> outputTopics;
     private KafkaStreams kafkaStreams;
+
+    KTable<String, FabTranslatedEvent>[] tables;
+    KeyValueBytesStoreSupplier[] storeSuppliers;
 
     private boolean started = false;
 
@@ -58,22 +70,44 @@ public class PersistentTopicStreamer {
 
         StreamsBuilder builder = new StreamsBuilder();
 
-        // Create a stream over the input_topic
-        KStream<String, FabTranslatedEvent> fabDataEntries = builder.stream("test", Consumed.with(Serdes.String(), fabEventSerde));
+        // We don't know how many categories the simulator will create, so we subscribe to topics based on pattern's
+        // matching. Every topics like category1, category40 is valid.
+//        Pattern inputTopicPattern = Pattern.compile(StreamProcessor.OUTPUT_TOPIC_PREFIX + "category[0-9]+");
+        Pattern inputTopicPattern = Pattern.compile("category[0-9]+");
 
-        // Extract the topic from the message, because a message is published in the category type topic.
-        TopicNameExtractor<String, FabTranslatedEvent> topicNameExtractor = new TopicNameExtractor<String, FabTranslatedEvent>() {
-            @Override
-            public String extract(String s, FabTranslatedEvent fabEvent, RecordContext recordContext) {
-                outputTopics.add(fabEvent.getHoldType());
-                System.out.println("Using topic: " + fabEvent.getHoldType());
-                return fabEvent.getHoldType();
-            }
-        };
+        // Create a stream over the input_topic
+        KStream<String, FabTranslatedEvent> fabDataEntries =
+                builder.stream(inputTopicPattern, Consumed.with(Serdes.String(), fabEventSerde));
+
+        KStream<String, FabTranslatedEvent>[] branches = fabDataEntries.branch(
+                (key, fab) -> fab.getHoldType().contains("0"),
+                (key, fab) -> fab.getHoldType().contains("1"),
+                (key, fab) -> fab.getHoldType().contains("2"),
+                (key, fab) -> fab.getHoldType().contains("3"),
+                (key, fab) -> fab.getHoldType().contains("4"),
+                (key, fab) -> fab.getHoldType().contains("5"),
+                (key, fab) -> fab.getHoldType().contains("6"),
+                (key, fab) -> fab.getHoldType().contains("7"),
+                (key, fab) -> fab.getHoldType().contains("8"),
+                (key, fab) -> fab.getHoldType().contains("9"));
+
+
+        storeSuppliers = new KeyValueBytesStoreSupplier[branches.length];
+        tables = new KTable[branches.length];
+
+        for (int i = 0; i < branches.length; i++) {
+            storeSuppliers[i] = Stores.inMemoryKeyValueStore(PERSISTENT_TABLE_NAME_PREFIX + i);
+            tables[i] = branches[i]
+                    .groupByKey()
+                    .reduce((aggValue, newValue) -> newValue, Materialized.<String, FabTranslatedEvent>as(storeSuppliers[i])
+                            .withKeySerde(Serdes.String())
+                            .withValueSerde(fabEventSerde));
+//            builder.addStateStore(Stores.keyValueStoreBuilder(storeSuppliers[i], Serdes.String(), fabEventSerde));
+        }
 
         // Insert all the input stream into the output specific topic by using a topic name extractor.
         // If the topic is missing it will be automatically created.
-        fabDataEntries.to(topicNameExtractor, Produced.with(Serdes.String(), fabEventSerde));
+
 
         // Another stream into a general topic for debug purpose only.
 //        KStream<String, FabConnectEvent> fabDataEntriesDebug = builder.stream(inputTopic, Consumed.with(Serdes.String(), fabEventSerde));
@@ -89,5 +123,24 @@ public class PersistentTopicStreamer {
 
     public String getTest() {
         return "From Persistent";
+    }
+
+    public List<FabTranslatedEvent> getTableAsListFromCategory(int category) throws InterruptedException {
+        if (category >= 10) return null;
+        LinkedList<FabTranslatedEvent> list = new LinkedList<>();
+        KTable<String, FabTranslatedEvent> table = this.tables[category];
+
+        try {
+            KeyValueIterator<String, FabTranslatedEvent> iterator =
+                    this.kafkaStreams.store(table.queryableStoreName(), QueryableStoreTypes.<String, FabTranslatedEvent>keyValueStore()).all();
+            while (iterator.hasNext()) {
+                KeyValue<String, FabTranslatedEvent> entry = iterator.next();
+                list.add(entry.value);
+            }
+        } catch (InvalidStateStoreException ex) {
+            Thread.sleep(300);
+        }
+        return list;
+
     }
 }

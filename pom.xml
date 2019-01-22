@@ -17,14 +17,6 @@
     </build>
 
     <dependencies>
-
-        <!-- Kafka consumer -->
-        <dependency>
-            <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka-clients</artifactId>
-            <version>0.9.0.0</version>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/log4j/log4j -->
         <dependency>
             <groupId>log4j</groupId>
@@ -46,6 +38,7 @@
             <artifactId>kafka_2.12</artifactId>
             <version>2.1.0</version>
         </dependency>
+
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
@@ -72,7 +65,6 @@
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-server</artifactId>
-            <version>1.19.4</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.jaxrs/jackson-jaxrs-base -->
@@ -88,6 +80,7 @@
             <artifactId>jackson-jaxrs-json-provider</artifactId>
             <version>2.8.8</version>
         </dependency>
+
         <dependency>
             <groupId>org.glassfish.hk2.external</groupId>
             <artifactId>javax.inject</artifactId>

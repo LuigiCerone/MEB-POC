@@ -154,46 +154,6 @@ public class StreamProcessor {
 
 //        builder.addStateStore(Stores.keyValueStoreBuilder(stepStoreSupplier, Serdes.String(), rawEventSerde));
 
-
-        // Don't delete, maybe this could allow use to use smaller msg.
-//        ValueTransformerSupplier<FabEvent, FabEvent> valueTransformerSupplier = new ValueTransformerSupplier<FabEvent, FabEvent>() {
-//            @Override
-//            public ValueTransformer<FabEvent, FabEvent> get() {
-//                return new ValueTransformer<FabEvent, FabEvent>() {
-//                    private KeyValueStore<String, RawEvent> eqipState;
-//                    private KeyValueStore<String, RawEvent> recipeState;
-//                    private KeyValueStore<String, RawEvent> stepState;
-//
-//
-//                    @Override
-//                    public void init(ProcessorContext processorContext) {
-//                        this.eqipState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.EQUIP_TRANSLATION_STATE);
-//                        KeyValueIterator<String, RawEvent> iter = this.eqipState.all();
-//
-//                        while (iter.hasNext()) {
-//                            KeyValue<String, RawEvent> entry = iter.next();
-////                            context.forward(entry.key, entry.value.toString());
-//                        }
-//                        this.recipeState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.RECIPE_TRANSLATION_STATE);
-//                        this.stepState = (KeyValueStore<String, RawEvent>) processorContext.getStateStore(StreamProcessor.STEP_TRANSLATION_STATE);
-//
-////                        logger.debug("aa" + eqipState);
-//                    }
-//
-//                    @Override
-//                    public FabEvent transform(FabEvent fabEvent) {
-//                        System.out.println(fabEvent.toString());
-//                        return fabEvent;
-//                    }
-//
-//                    @Override
-//                    public void close() {
-//
-//                    }
-//                };
-//            }
-//        };
-
         // Obtain one instance of the FabDataTransformer.
         TransformerSupplier<String, FabEvent, KeyValue<String, FabTranslatedEvent>> transformerSupplier = new TransformerSupplier<String, FabEvent, KeyValue<String, FabTranslatedEvent>>() {
             @Override
