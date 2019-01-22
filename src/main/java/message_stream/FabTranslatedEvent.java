@@ -1,8 +1,12 @@
 package message_stream;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import stream_processor.JSONDateSerializer;
 
 // TODO Maybe we can box this class with FabEvent.
+@JsonSerialize(using = JSONDateSerializer.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FabTranslatedEvent {
 
@@ -15,6 +19,9 @@ public class FabTranslatedEvent {
     private String holdType;
     private boolean holdFlag;
     private long dateTime;
+
+    @JsonIgnore
+    private boolean translated;
 
     // Don't remove, required by Jackson.
     public FabTranslatedEvent() {
@@ -128,9 +135,14 @@ public class FabTranslatedEvent {
     }
 
 
+    @JsonIgnore
     public boolean isTranslated() {
         if (equipName != null && recipeName != null && stepName != null)
             return true;
         else return false;
+    }
+
+    public void setTranslated(boolean translated) {
+        this.translated = translated;
     }
 }

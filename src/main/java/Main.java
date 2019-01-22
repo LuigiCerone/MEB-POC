@@ -1,7 +1,5 @@
 import main.KafkaRunner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import stream_processor.JacksonConfig;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import stream_processor.RESTService;
 
 import javax.ws.rs.ApplicationPath;
@@ -13,13 +11,23 @@ import java.util.Set;
 @ApplicationPath("/")
 public class Main extends Application {
 
+//    @Override
+//    public Set<Class<?>> getClasses() {
+//        Set<Class<?>> resources = new java.util.HashSet<>();
+//        resources.add(JacksonFeature.class);
+//        return resources;
+//    }
+
     @Override
     public Set<Object> getSingletons() {
         Set<Object> set = new HashSet<>();
-        KafkaRunner kafkaRunner = new KafkaRunner();
-        set.add(kafkaRunner);
+
+        set.add(new KafkaRunner());
         set.add(new RESTService());
-        set.add(new JacksonConfig());
+        set.add(new JacksonFeature());
+//        set.add(new MarshallingFeature());
+//        set.add(new JacksonJsonProvider());
         return set;
     }
+
 }

@@ -21,9 +21,6 @@ public class RESTService {
     private PersistentTopicStreamer persistentTopicStreamer;
 
     public RESTService() {
-//        this.persistentTopicStreamer = persistentTopicStreamer;
-//        this.persistentTopicStreamer = new PersistentTopicStreamer(123455);
-//        persistentTopicStreamer.start();
 
         this.persistentTopicStreamer = KafkaRunner.getPersistentTopicStreamer();
         endpoints = new ArrayList<>();
