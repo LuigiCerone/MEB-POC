@@ -3,15 +3,25 @@ import fab_data_connector.FabDataStreamer;
 import message_stream.StreamProcessor;
 import org.apache.kafka.streams.state.HostInfo;
 import raw_data_connector.RawDataStreamer;
+import stream_processor.JacksonConfig;
+import stream_processor.PersistentTopicStreamer;
 import stream_processor.RESTService;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
+import java.util.HashSet;
 import java.util.Set;
 
 
 @ApplicationPath("/")
 public class Main extends Application {
+    static PersistentTopicStreamer persistentTopicStreamer;
+
+    static {
+        persistentTopicStreamer = new PersistentTopicStreamer(123455);
+        persistentTopicStreamer.start();
+    }
+
     public static void main(String[] agrs) throws Exception {
         System.out.println("Started");
 
@@ -28,20 +38,16 @@ public class Main extends Application {
             StreamProcessor streamProcessor = new StreamProcessor(123459);
             streamProcessor.start();
 
-
-//            RESTService restService = new RESTService(new HostInfo("http://localhost", 8080));
-
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
     @Override
-    public Set<Class<?>> getClasses() {
-        Set<Class<?>> resources = new java.util.HashSet<>();
-        resources.add(RESTService.class);
-        resources.add(JacksonJsonProvider.class);
-//        resources.add(CustomJacksonJsonProvider.class);
-        return resources;
+    public Set<Object> getSingletons() {
+        Set<Object> set = new HashSet<>();
+        set.add(new RESTService(persistentTopicStreamer));
+        set.add(new JacksonConfig());
+        return set;
     }
 }
