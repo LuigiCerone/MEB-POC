@@ -53,11 +53,10 @@ public class StreamProcessor {
         // Configure the stream.
         Properties streamsConfiguration = new Properties();
 
-        streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "test3");
+        streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "streamer-processor");
         streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
         streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, FabEventSerde.class);
-//        streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, fabRowSerde.getClass().getName());
 //        streamsConfiguration.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 10 * 1024 * 1024L);
 //        streamsConfiguration.put(StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, CustomExceptionHandler.class);
 
@@ -110,7 +109,7 @@ public class StreamProcessor {
         // This for a table in the disk.
         // KeyValueBytesStoreSupplier equipStoreSupplier = Stores.persistentKeyValueStore(EQUIP_TRANSLATION_STATE);
         // This for a table in RAM.
-        KeyValueBytesStoreSupplier equipStoreSupplier = Stores.inMemoryKeyValueStore(EQUIP_TRANSLATION_STATE);
+        KeyValueBytesStoreSupplier equipStoreSupplier = Stores.persistentKeyValueStore(EQUIP_TRANSLATION_STATE);
 
         KTable<String, RawEvent> equipTable = builder.table(
                 translation_topics[0],
@@ -119,7 +118,7 @@ public class StreamProcessor {
 //        builder.addStateStore(Stores.keyValueStoreBuilder(equipStoreSupplier, Serdes.String(), rawEventSerde));
 
         // One for the recipeOID translation into names.
-        KeyValueBytesStoreSupplier recipeStoreSupplier = Stores.inMemoryKeyValueStore(RECIPE_TRANSLATION_STATE);
+        KeyValueBytesStoreSupplier recipeStoreSupplier = Stores.persistentKeyValueStore(RECIPE_TRANSLATION_STATE);
 
         KTable<String, RawEvent> recipeTable = builder.table(
                 translation_topics[1],
@@ -128,7 +127,7 @@ public class StreamProcessor {
 //        builder.addStateStore(Stores.keyValueStoreBuilder(recipeStoreSupplier, Serdes.String(), rawEventSerde));
 
         // One for the stepOID translation into names.
-        KeyValueBytesStoreSupplier stepStoreSupplier = Stores.inMemoryKeyValueStore(STEP_TRANSLATION_STATE);
+        KeyValueBytesStoreSupplier stepStoreSupplier = Stores.persistentKeyValueStore(STEP_TRANSLATION_STATE);
 
         KTable<String, RawEvent> stepTable = builder.table(
                 translation_topics[2],

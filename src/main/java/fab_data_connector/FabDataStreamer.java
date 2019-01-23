@@ -37,7 +37,7 @@ public class FabDataStreamer {
         // Configure the stream.
         Properties streamsConfiguration = new Properties();
 
-        streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "test2");
+        streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "fab-data-streamer");
         streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
         streamsConfiguration.put(StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, CustomExceptionHandler.class);
 
@@ -55,8 +55,6 @@ public class FabDataStreamer {
 
         // Create the SerDe (SerializationDeserialization) object that Kafka Stream need.
         final Serde<FabConnectEvent> fabEventSerde = Serdes.serdeFrom(fabEventSerializer, fabEventDeserializer);
-//        streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
-//        streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, fabEventSerde.getClass().getName());
 
         StreamsBuilder builder = new StreamsBuilder();
 

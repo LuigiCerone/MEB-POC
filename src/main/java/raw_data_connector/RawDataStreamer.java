@@ -40,7 +40,7 @@ public class RawDataStreamer {
         // Configure the stream.
         Properties streamsConfiguration = new Properties();
 
-        streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "test1");
+        streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "raw-data-streamer");
         streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
 
         // Configure the serialization and deserialization.
@@ -62,13 +62,6 @@ public class RawDataStreamer {
         // Create a stream over the input_topic
         KStream<String, RawConnectEvent> rawDataEntries = builder.stream(inputTopic, Consumed.with(Serdes.String(), rawEventSerde));
 
-        // This is another version in which the rawDataEntries are smaller in size.
-//        KStream<Long, String> mappedStream = rawDataEntries.map(new KeyValueMapper<String, RawConnectEvent, KeyValue<? extends Long, ? extends String>>() {
-//            @Override
-//            public KeyValue<? extends Long, ? extends String> apply(String s, RawConnectEvent rawConnectEvent) {
-//                return KeyValue.pair(rawConnectEvent.getOid(), rawConnectEvent.getNameTranslation());
-//            }
-//        });
 
         // Extract the topic from the message, because a message is published in the category type topic.
         TopicNameExtractor<String, RawConnectEvent> topicNameExtractor = new TopicNameExtractor<String, RawConnectEvent>() {
