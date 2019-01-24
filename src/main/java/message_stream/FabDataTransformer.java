@@ -36,8 +36,10 @@ public class FabDataTransformer implements Transformer<String, FabEvent, KeyValu
         this.failedTranslationsState = (KeyValueStore<String, FabTranslatedEvent>) processorContext.getStateStore(StreamProcessor.FAILED_TRANSLATION);
 
         // Schedule a punctuate method.
-        this.context.schedule(Duration.ofSeconds(30), PunctuationType.STREAM_TIME, new FabTransformerPunctuator());
+        this.context.schedule(Duration.ofSeconds(30), PunctuationType.WALL_CLOCK_TIME, new FabTransformerPunctuator());
+//        this.context.schedule(Duration.ofSeconds(30), PunctuationType.STREAM_TIME, new FabTransformerPunctuator());
 
+        System.out.println("Init");
     }
 
     @Override
@@ -62,7 +64,7 @@ public class FabDataTransformer implements Transformer<String, FabEvent, KeyValu
 
     }
 
-    // type=0 -> equip, type=1 -> recipe, type=3 -> step.
+    // type=0 -> equip, type=1 -> recipe, type=2 -> step.
     private void tryToTranslate(int type, FabTranslatedEvent fabTranslatedEvent) {
         KeyValueStore<String, RawEvent> kTable = null;
         String oidToTranslate = null;

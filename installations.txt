@@ -7,6 +7,7 @@ curl -i -X POST -H "Accept:application/json" \
             "connector.class": "io.debezium.connector.mysql.MySqlConnector",
             "database.hostname": "localhost",
             "database.port": "3306",
+
             "database.user": "sa18",
             "database.password": "software_architectures_18",
             "database.server.id": "42",
@@ -19,7 +20,44 @@ curl -i -X POST -H "Accept:application/json" \
     }'
 
 
+./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic translated_categories
+
 ./kafka-configs.sh --zookeeper localhost:2181 --entity-type topics --entity-name sa18.raw_data.analytics --alter --add-config max.message.bytes=104857600
 
 Could be useful in future:
 props.put(ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG, "104857600");
+
+curl -i -X POST -H "Accept:application/json" \
+    -H  "Content-Type:application/json" http://localhost:8083/connectors/ \
+    -d ' {
+    "name": "mongodb-sink",
+    "config": {
+        "connector.class": "at.grahsl.kafka.connect.mongodb.MongoDbSinkConnector",
+        "tasks.max": "1",
+        "topics": "translated_categories",
+        "mongodb.connection.uri": "mongodb://localhost:27017/connect",
+        "mongodb.document.id.strategy":"at.grahsl.kafka.connect.mongodb.processor.id.strategy.BsonOidStrategy",
+        "mongodb.collection": "events",
+        "mongodb.delete.on.null.values": "true"
+    }
+}'
+
+
+{
+    "name": "mongodb-sink",
+    "config": {
+        "connector.class": "at.grahsl.kafka.connect.mongodb.MongoDbSinkConnector",
+        "tasks.max": "1",
+        "topics": "final_ddd_aggregates",
+        "mongodb.connection.uri": "mongodb://mongodb:27017/inventory?w=1&journal=true",
+        "mongodb.collection": "customers_with_addresses",
+        "mongodb.document.id.strategy": "at.grahsl.kafka.connect.mongodb.processor.id.strategy.FullKeyStrategy",
+        "mongodb.delete.on.null.values": true
+    }
+}
+
+mongodb.document.id.strategy": "at.grahsl.kafka.connect.mongodb.processor.id.strategy.FullKeyStrategy",
+
+
+            "connect.mongo.username": "",
+            "connect.mongo.password":"",

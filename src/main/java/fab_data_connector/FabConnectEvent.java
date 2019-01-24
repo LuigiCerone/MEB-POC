@@ -94,7 +94,7 @@ public class FabConnectEvent {
 
         this.setEquipID(Long.parseLong((String) after.get(EQUIP_ID), 16));
         this.setRecipeID(Long.parseLong((String) after.get(RECIPE_ID), 16));
-        this.setStepID(Long.parseLong((String) after.get(RECIPE_ID), 16));
+        this.setStepID(Long.parseLong((String) after.get(STEP_ID), 16));
         this.setHoldType((String) after.get(HOLD_TYPE));
         this.setHoldFlag(Boolean.parseBoolean(String.valueOf(after.get(HOLD_FLAG))));
         this.setDateTime(Long.parseLong(String.valueOf(after.get(DATE_TIME))));

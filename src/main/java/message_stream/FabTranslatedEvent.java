@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import stream_processor.JSONDateSerializer;
 
 // TODO Maybe we can box this class with FabEvent.
-@JsonSerialize(using = JSONDateSerializer.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FabTranslatedEvent {
 
