@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components:SoftwareArchitecture xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:components="components" name="">
+  <SAElements xsi:type="components:Component" name="External Systems" x="1.0" y="3.0">
+    <ports xsi:type="components:OutMessagePort"/>
+    <ports xsi:type="components:InMessagePort"/>
+    <modes xsi:type="components:InitialMode" name="Init">
+      <behaviouralElements xsi:type="components:Start" outgoing="//@SAElements.0/@modes.0/@behaviouralElements.1"/>
+      <behaviouralElements xsi:type="components:Link" source="//@SAElements.0/@modes.0/@behaviouralElements.0" target="//@SAElements.0/@modes.0/@exits.0" condition="start"/>
+      <exits incoming="//@SAElements.0/@modes.0/@behaviouralElements.1" targetMode="//@SAElements.0/@modes.1/@entries.0"/>
+    </modes>
+    <modes name="Normal">
+      <behaviouralElements xsi:type="components:Sense" name="tool" outgoing="//@SAElements.0/@modes.1/@behaviouralElements.4" dataDeclarationName="xml" data="tool"/>
+      <behaviouralElements xsi:type="components:Server" name="raw_data DBMS" outgoing="//@SAElements.0/@modes.1/@behaviouralElements.13" incoming="//@SAElements.0/@modes.1/@behaviouralElements.11"/>
+      <behaviouralElements xsi:type="components:Server" name="fab_data DBMS" outgoing="//@SAElements.0/@modes.1/@behaviouralElements.7" incoming="//@SAElements.0/@modes.1/@behaviouralElements.5 //@SAElements.0/@modes.1/@behaviouralElements.9"/>
+      <behaviouralElements xsi:type="components:StoreData" name="fab_data Database" outgoing="//@SAElements.0/@modes.1/@behaviouralElements.5" incoming="//@SAElements.0/@modes.1/@behaviouralElements.4" dataRecipient="//@SAElements.0/@applicationData.3" data="fab_data Database"/>
+      <behaviouralElements xsi:type="components:Link" source="//@SAElements.0/@modes.1/@behaviouralElements.0" target="//@SAElements.0/@modes.1/@behaviouralElements.3" condition="insert"/>
+      <behaviouralElements xsi:type="components:Link" source="//@SAElements.0/@modes.1/@behaviouralElements.3" target="//@SAElements.0/@modes.1/@behaviouralElements.2" condition="API"/>
+      <behaviouralElements xsi:type="components:UnicastSendMessage" name="" incoming="//@SAElements.0/@modes.1/@behaviouralElements.7" data="fab_data" toMessagePorts="//@SAElements.0/@ports.0" dataRecipient="//@SAElements.0/@applicationData.2"/>
+      <behaviouralElements xsi:type="components:Link" source="//@SAElements.0/@modes.1/@behaviouralElements.2" target="//@SAElements.0/@modes.1/@behaviouralElements.6" condition="response"/>
+      <behaviouralElements xsi:type="components:ReceiveMessage" outgoing="//@SAElements.0/@modes.1/@behaviouralElements.9" dataRecipientName="fab_data query" fromMessagePorts="//@SAElements.0/@ports.1" dataRecipient="//@SAElements.0/@applicationData.1"/>
+      <behaviouralElements xsi:type="components:Link" source="//@SAElements.0/@modes.1/@behaviouralElements.8" target="//@SAElements.0/@modes.1/@behaviouralElements.2"/>
+      <behaviouralElements xsi:type="components:ReceiveMessage" outgoing="//@SAElements.0/@modes.1/@behaviouralElements.11" dataRecipientName="raw_data query" fromMessagePorts="//@SAElements.0/@ports.1" dataRecipient="//@SAElements.0/@applicationData.1"/>
+      <behaviouralElements xsi:type="components:Link" source="//@SAElements.0/@modes.1/@behaviouralElements.10" target="//@SAElements.0/@modes.1/@behaviouralElements.1"/>
+      <behaviouralElements xsi:type="components:UnicastSendMessage" name="" incoming="//@SAElements.0/@modes.1/@behaviouralElements.13" data="raw_data" toMessagePorts="//@SAElements.0/@ports.0" dataRecipient="//@SAElements.0/@applicationData.2"/>
+      <behaviouralElements xsi:type="components:Link" source="//@SAElements.0/@modes.1/@behaviouralElements.1" target="//@SAElements.0/@modes.1/@behaviouralElements.12" condition="response"/>
+      <entries/>
+    </modes>
+    <applicationData xsi:type="components:PrimitiveDataDeclaration" dataName="xml" value="None" type="string"/>
+    <applicationData xsi:type="components:PrimitiveDataDeclaration" dataName="SQL query" value="None" type="string"/>
+    <applicationData xsi:type="components:PrimitiveDataDeclaration" dataName="SQL response" value="None" type="string"/>
+    <applicationData xsi:type="components:PrimitiveDataDeclaration" dataName="SQL row" value="None" type="string"/>
+  </SAElements>
+</components:SoftwareArchitecture>
