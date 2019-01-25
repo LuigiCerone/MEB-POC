@@ -25,6 +25,7 @@ public class RESTService {
         this.persistentTopicStreamer = KafkaRunner.getPersistentTopicStreamer();
         endpoints = new ArrayList<>();
         endpoints.add("/category/{number}");
+        endpoints.add("/tool/{number}");
     }
 
 
@@ -33,6 +34,14 @@ public class RESTService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCategoryLive(@PathParam("number") final int category) throws InterruptedException {
         List<FabTranslatedEvent> result = this.persistentTopicStreamer.getTableAsListFromCategory(category);
+        return Response.ok(result).status(200).build();
+    }
+
+    @GET
+    @Path("/tool/{number}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTool(@PathParam("number") final String toolID) {
+        List<FabTranslatedEvent> result = new SinkDatabase().getEventsByTool(toolID);
         return Response.ok(result).status(200).build();
     }
 

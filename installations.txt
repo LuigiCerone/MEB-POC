@@ -21,8 +21,13 @@ curl -i -X POST -H "Accept:application/json" \
 
 
 ./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic translated_categories
-
+./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic sa18.raw_data.analytics
+./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic step_analytics
+./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic recipe_analytics
+./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic equip_analytics
 ./kafka-configs.sh --zookeeper localhost:2181 --entity-type topics --entity-name sa18.raw_data.analytics --alter --add-config max.message.bytes=104857600
+
+
 
 Could be useful in future:
 props.put(ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG, "104857600");
@@ -38,9 +43,36 @@ curl -i -X POST -H "Accept:application/json" \
         "mongodb.connection.uri": "mongodb://localhost:27017/connect",
         "mongodb.document.id.strategy":"at.grahsl.kafka.connect.mongodb.processor.id.strategy.BsonOidStrategy",
         "mongodb.collection": "events",
-        "mongodb.delete.on.null.values": "true"
+        "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "key.converter.schemas.enable": false,
+        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "value.converter.schemas.enable": false
     }
 }'
+
+
+
+ProvidedInValueStrategy
+        "mongodb.post.processor.chain":"at.grahsl.kafka.connect.mongodb.processor.field.renaming.RenameByMapping",
+        "mongodb.field.renamer.mapping": "[{\"oldName\":\"value.equipID\",\"newName\":\"_id\"}]"
+
+BsonOidStrategy
+
+mongodb.field.renamer.mapping=[{"oldName":"key.fieldA","newName":"field1"},{"oldName":"value.xyz","newName":"abc"}]
+{
+    "name": "mongodb-sink",
+    "config": {
+        "connector.class": "at.grahsl.kafka.connect.mongodb.MongoDbSinkConnector",
+        "tasks.max": 1,
+        "topics": "connect-custom",
+        "mongodb.connection.uri": "mongodb://mongo-db/test?retryWrites=true",
+        "mongodb.collection": "MyCollection",
+        "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "key.converter.schemas.enable": false,
+        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "value.converter.schemas.enable": false
+    }
+}
 
 
 {
