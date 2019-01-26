@@ -21,7 +21,6 @@ import java.util.*;
 public class FabDataStreamer {
 
     public final static String INPUT_TOPIC = "sa18.fab_data.event";
-    //    public final static String TOPIC = "consumer-tutorial";
     public final static String BOOTSTRAP_SERVERS = "localhost:9092";
 
     private int id;

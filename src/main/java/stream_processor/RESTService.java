@@ -24,8 +24,8 @@ public class RESTService {
 
         this.persistentTopicStreamer = KafkaRunner.getPersistentTopicStreamer();
         endpoints = new ArrayList<>();
-        endpoints.add("/category/{number}");
-        endpoints.add("/tool/{number}");
+        endpoints.add("{\"url\":\"/category/{number}\"}");
+        endpoints.add("{\"url\":\"/tool/{number}\"}");
     }
 
 

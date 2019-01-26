@@ -96,7 +96,8 @@ public class PersistentTopicStreamer {
         tables = new KTable[branches.length];
 
         for (int i = 0; i < branches.length; i++) {
-            storeSuppliers[i] = Stores.inMemoryKeyValueStore(PERSISTENT_TABLE_NAME_PREFIX + i);
+//            storeSuppliers[i] = Stores.inMemoryKeyValueStore(PERSISTENT_TABLE_NAME_PREFIX + i);
+            storeSuppliers[i] = Stores.persistentKeyValueStore(PERSISTENT_TABLE_NAME_PREFIX + i);
             tables[i] = branches[i]
                     .groupByKey()
                     .reduce((aggValue, newValue) -> newValue, Materialized.<String, FabTranslatedEvent>as(storeSuppliers[i])
