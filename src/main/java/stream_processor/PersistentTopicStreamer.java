@@ -52,6 +52,7 @@ public class PersistentTopicStreamer {
         streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "persistent-streamer");
         streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
         streamsConfiguration.put(StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, CustomExceptionHandler.class);
+        streamsConfiguration.put(StreamsConfig.STATE_DIR_CONFIG, "/home/luigi-cer1/sa18/");
 
 
         // Configure the serialization and deserialization.
@@ -72,8 +73,8 @@ public class PersistentTopicStreamer {
 
         // We don't know how many categories the simulator will create, so we subscribe to topics based on pattern's
         // matching. Every topics like category1, category40 is valid.
-//        Pattern inputTopicPattern = Pattern.compile(StreamProcessor.OUTPUT_TOPIC_PREFIX + "category[0-9]+");
-        Pattern inputTopicPattern = Pattern.compile("category[0-9]+");
+        Pattern inputTopicPattern = Pattern.compile(StreamProcessor.OUTPUT_TOPIC_PREFIX + "category[0-9]+");
+//        Pattern inputTopicPattern = Pattern.compile("category[0-9]+");
 
         // Create a stream over the input_topic
         KStream<String, FabTranslatedEvent> fabDataEntries =

@@ -1,11 +1,6 @@
 package message_stream;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonSetter;
-
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class RawEvent {

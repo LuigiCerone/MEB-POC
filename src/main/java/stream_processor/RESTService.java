@@ -16,7 +16,6 @@ import java.util.List;
 @Path("rest")
 public class RESTService {
 
-    private HostInfo hostInfo;
     private ArrayList<String> endpoints;
     private PersistentTopicStreamer persistentTopicStreamer;
 
