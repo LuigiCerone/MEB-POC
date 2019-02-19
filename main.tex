@@ -1,0 +1,133 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fancyhdr}
+\usepackage{makecell}
+%% Box Packages & Commands %%
+\usepackage{lmodern}
+\usepackage[most]{tcolorbox}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage{multirow}
+
+\usepackage{listings}
+\lstset{language=R,
+basicstyle=\ttfamily\footnotesize,
+columns=fullflexible,
+frame=none,
+}
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    frame=single, % adds a frame around the code
+    xleftmargin=3.4pt,
+    xrightmargin=3.4pt,
+    breaklines=true,
+    showstringspaces=false
+}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+\urlstyle{same}
+
+
+\usepackage[toc,page]{appendix}
+
+
+
+
+% For image floating
+\usepackage{float}
+
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+\newtcolorbox[blend into=tables]{colortable}[2][]{
+	colback=white,
+	tabularx*={\renewcommand{\arraystretch}{1.0}}{Y|Y|Y|Y|Y|Y|Y},title={#2},boxrule=0.8pt, center title
+	}
+\newtcolorbox[blend into=figures]{blockfigure}[2][]
+	{
+		colback=white,
+		float=!htbp,
+		boxsep=1pt,
+		left=1pt,
+		right=1pt,
+		top=1pt,
+		bottom=1pt,
+		center title,
+		%%lifted shadow={1mm}{-2mm}{3mm}{0.1mm}{black!50!white},
+		title={#2},
+		every float=\centering,
+		#1
+	}
+%% %%
+%% Section Depth %%
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+%% %%
+%% Items Manipulation e.g. in Itemize %%
+\usepackage{enumitem}
+%% %%
+\pagestyle{fancy}
+\fancyhf{}
+\setlength{\headheight}{14.5pt}
+\rhead{Software Architecture}
+\lhead{LinuxFellows}
+\rfoot{Page \thepage}
+
+
+\begin{document}
+\begin{titlepage}
+	\begin{center}
+		\includegraphics[width=0.6\textwidth]{img/UnivAQ-logo}\\[0.4cm]
+		{\LARGE University of L'Aquila}\\[0.4cm]
+		{\large Department of Information Engineering, Computer Science and Mathematics}\\[0.4cm]
+		{\normalsize Course of Software Architectures}\\
+		\rule{\linewidth}{0.5mm} \\[0.4cm]
+		{\large \bfseries The MEB-POC Manufacturing System \\[0.4cm] }
+		\rule{\linewidth}{0.5mm} \\[0.4cm]
+		\noindent
+		\begin{tabular}{ |c|c|c| } 
+				\hline
+ 				\multicolumn{2}{|c|}{Team Name} & \textbf{LinuxFellows} \\
+ 				\hline
+ 				\thead{Name-Surname} & \thead{Matriculation \\ Number} & \thead{Email Address} \\
+				 \hline
+ 				\textbf{Luigi Cerone} & 261212 & luigi.cerone1@student.univaq.it \\
+ 				\hline
+ 				\textbf{Andrea D'Ascenzo} & 261123 & andrea.dascenzo@student.univaq.it \\
+ 				\hline
+  				\textbf{Aly Shmahell} & 258912 & aly.shmahell@student.univaq.it \\ 
+ 				\hline
+		\end{tabular}
+		\vfill
+		\today
+	\end{center}
+\end{titlepage}
+% End first page.
+
+% Start summary.
+\newpage
+\tableofcontents
+% End summary.
+
+% Start figures
+\newpage
+\listoffigures
+% End figures.
+
+\newpage
+
+% \part{The First Part}
+
+\include{chapter1}
+\include{chapter2}
+\include{chapter3}
+\include{chapter4}
+% \include{chapter_test}
+
+\end{document}

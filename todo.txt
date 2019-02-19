@@ -1,0 +1,5 @@
+- add sequence diagrams. done
+- translate design decision into xls format. done
+- modify the component with cache and tool components. done
+- add information about solace. done
+- review design decisions. done

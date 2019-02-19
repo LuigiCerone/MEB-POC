@@ -1,0 +1,198 @@
+\begin{appendices}
+\chapter{Installation notes}
+
+Install mysql server and create an user with username \textit{sa18} and password \textit{software\_architectures\_18}. Grant to this user all the permission to perform CRUD operation.
+
+In order to install kafka
+\begin{lstlisting}[language=bash]
+cd /home/USER_NAME/Downloads (or "Scaricati")
+sudo wget http://it.apache.contactlab.it/kafka/2.1.0/kafka_2.11-2.1.0.tgz
+
+tar xvzf kafka_2.11-2.1.0.tgz
+mkdir /opt/kafka
+sudo mv kafka_2.11-2.1.0/ /opt/kafka
+ 
+\end{lstlisting}
+
+In order to use Kafka Connect you need to install mysql on the computer and the configure the log of the DBMS. 
+Edit the file \textit{/etc/mysql/my.cnf} by adding the line log\_bin = mysql-bin :
+
+Example:
+\begin{lstlisting}
+[mysqld]
+server-id         = 42
+log_bin           = mysql-bin
+binlog_format     = row
+binlog_row_image  = full
+expire_logs_days  = 10
+\end{lstlisting}
+
+and restart the mysql server.
+
+Then we need to create two services, one for zookeeper and one for kafka.
+
+\begin{lstlisting}[language=bash]
+sudo nano /etc/systemd/system/zookeeper.service
+\end{lstlisting}
+ with code:
+ \begin{lstlisting}
+ [Unit]
+Description=Apache Zookeeper server (Kafka)
+Documentation=http://zookeeper.apache.org
+Requires=network.target remote-fs.target
+After=network.target remote-fs.target
+
+[Service]
+Type=simple
+User=YUOR_USER
+Environment=JAVA_HOME=/usr/java/java1.8.0
+ExecStart=/opt/kafka/bin/zookeeper-server-start.sh /opt/kafka/config/zookeeper.properties
+ExecStop=/opt/kafka/bin/zookeeper-server-stop.sh
+
+[Install]
+WantedBy=multi-user.target
+
+ \end{lstlisting}
+ 
+ Note that you need to set JAVA\_HOME and profile name according to your system and that the used configuration file (i.e. config/zookeeper.properties) is the default one.
+ Then start it with:
+ \begin{lstlisting}[language=bash]
+ sudo systemctl start zookeeper.service
+ \end{lstlisting}
+ 
+ For the kafka service:
+ 
+ \begin{lstlisting}[language=bash]
+sudo nano /etc/systemd/system/kafka.service
+\end{lstlisting}
+ with code:
+ 
+ \begin{lstlisting}
+ [Unit]
+Description=Apache Kafka server (broker)
+Documentation=http://kafka.apache.org/documentation.html
+Requires=network.target remote-fs.target
+After=network.target remote-fs.target kafka-zookeeper.service
+
+[Service]
+Type=simple
+User=YOUR_USER
+
+Environment=JAVA_HOME=/usr/java/java1.8.0
+ExecStart=/opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties
+ExecStop=/opt/kafka/bin/kafka-server-stop.sh
+
+ \end{lstlisting}
+ 
+ Note that you need to set JAVA\_HOME and profile name according to your system and that the used configuration file (i.e. config/server.properties) is the default one.
+ Then start it with:
+ \begin{lstlisting}[language=bash]
+ sudo systemctl start kafka.service
+ \end{lstlisting}
+ 
+ 
+  For the kafka connect:
+ 
+ \begin{lstlisting}[language=bash]
+sudo nano /etc/systemd/system/connect.service
+\end{lstlisting}
+ with code:
+ 
+ \begin{lstlisting}
+  [Unit]
+Description=Apache Kafka Connect 
+Documentation=http://kafka.apache.org/documentation.html
+Requires=network.target remote-fs.target
+After=network.target remote-fs.target kafka-zookeeper.service
+
+[Service]
+Type=simple
+User=YOUR_PROFILE
+
+Environment=JAVA_HOME=/usr/java/java1.8.0
+ExecStart=/opt/kafka/bin/connect-distributed.sh /opt/kafka/config/connect-distributed.properties
+
+ \end{lstlisting}
+ 
+ Note that you need to set JAVA\_HOME and profile name according to your system and that the used configuration file (i.e. config/connect-distributed.properties) is the default one \textbf{plus} the following line:
+ 
+ \begin{lstlisting}
+ plugin.path=/opt/kafka/connect/
+ \end{lstlisting}
+ 
+ In this folder you need to put the debezium CDC plugin for your specific DBMS server and the debezium sink for the sink database, downloadable at \url{https://debezium.io/docs/install/} (unzipped) and at \url{https://www.confluent.io/connector/kafka-connect-mongodb-sink/}.
+ 
+ Start it with:
+ \begin{lstlisting}[language=bash]
+ sudo systemctl start connect.service
+ \end{lstlisting}
+ 
+ Then we need to import the fab\_data database from its fab\_data.sql file and the raw\_data database from raw\_data.sql. Subscribe our CDC connector by making a POST request to our system at the port in which kafka connect is running.
+ 
+ \begin{lstlisting}
+ curl -i -X POST -H "Accept:application/json" \
+    -H  "Content-Type:application/json" http://localhost:8083/connectors/ \
+    -d '{
+      "name": "mysql-connector",
+      "config": {
+            "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+            "database.hostname": "localhost",
+            "database.port": "3306",
+            "database.user": "sa18",
+            "database.password": "software_architectures_18",
+            "database.server.id": "42",
+            "database.server.name": "sa18",
+            "database.history.kafka.bootstrap.servers": "localhost:9092",
+            "database.history.kafka.topic": "dbhistory.sa18",
+            "include.schema.changes": "true",
+            "max.request.size":"104857600"
+       }
+    }'
+ \end{lstlisting}
+ 
+ Note this last curl operation needs to be done each time you restart the connect.service service.
+ 
+ The following is used to register the connector used to insert all the translated information into the MongoDB database. Note that the database, in this case "connect", needs to be created upfront.
+ 
+ \begin{lstlisting}
+ curl -i -X POST -H "Accept:application/json" \
+    -H  "Content-Type:application/json" http://localhost:8083/connectors/ \
+    -d ' {
+    "name": "mongodb-sink",
+    "config": {
+        "connector.class": "at.grahsl.kafka.connect.mongodb.MongoDbSinkConnector",
+        "tasks.max": "1",
+        "topics": "translated_categories",
+        "mongodb.connection.uri": "mongodb://localhost:27017/connect",
+        "mongodb.document.id.strategy":"at.grahsl.kafka.connect.mongodb.processor.id.strategy.BsonOidStrategy",
+        "mongodb.collection": "events",
+        "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "key.converter.schemas.enable": false,
+        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "value.converter.schemas.enable": false
+    }
+}'
+ \end{lstlisting}
+
+In order to run the prototype there is also the need to use an application JavaEE server for the web application, in fact given the fact that the dashboard is based on a RESTful service, we used TomEEplus container.
+
+Download it from \url{http://tomee.apache.org/download-ng.html} and configure it (set CATALINA\_HOME and JAVA\_HOME).
+
+Finally we need to create some topics that our system needs (the majority of them are auto created by it).
+
+\begin{lstlisting}
+./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic translated_categories
+./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic sa18.raw_data.analytics
+./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic step_analytics
+./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic recipe_analytics
+./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic equip_analytics
+./kafka-configs.sh --zookeeper localhost:2181 --entity-type topics --entity-name sa18.raw_data.analytics --alter --add-config max.message.bytes=104857600
+\end{lstlisting}
+
+The last command is very important, because it sets the topic size to a number able to process the 10Mb information requested from the raw\_data database.
+
+
+\end{appendices}
+ 
+ 
+ 
