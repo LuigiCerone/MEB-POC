@@ -52,7 +52,7 @@ public class PersistentTopicStreamer {
         streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "persistent-streamer");
         streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
         streamsConfiguration.put(StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, CustomExceptionHandler.class);
-        streamsConfiguration.put(StreamsConfig.STATE_DIR_CONFIG, "/home/luigi-cer1/sa18/");
+        streamsConfiguration.put(StreamsConfig.STATE_DIR_CONFIG, "/home/luigi/sa18/");
 
 
         // Configure the serialization and deserialization.
